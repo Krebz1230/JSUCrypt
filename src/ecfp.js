@@ -106,37 +106,39 @@ UCrypt.ECFp ||  (function (undefined) {
      */
     ecfp.curveNames = [
         "secp256k1",
+        "secp256r1",
+        "secp192k1",
         "secp192r1",
         "secp160k1",
-        "secp256r1",
         "secp160r2",
         "secp160r1",
-        "secp192k1",
         "brainpoolp256r1",
-        "brainpoolp192r1",
         "brainpoolp256t1",
+        "brainpoolp192r1",
         "brainpoolp192t1",
         "brainpoolp160r1",
         "brainpoolp160t1",
-        "P-256",
-        "P-192",
+        "P_256",
+        "P_192",
     ];
-    
     
     /**
      * Well know Elliptic Curce Domain over Fp specification. 
      * Each domain is associative object defining:
-     * <ul>
-     *   <li>a,b,p : the weierstrass parameter of y² = x³+ax+b
-     *   <li>Gx,Gy : the affine coordinate of the G base point.
-     *   <li>n     : the order of G
-     *   <li>h     : the cofactor of n
-     * </ul>
+     *
+     *   - a,b,p : the weierstrass parameter of y² = x³+ax+b
+     *   - Gx,Gy : the affine coordinate of the G base point.
+     *   - n     : the order of G
+     *   - h     : the cofactor of n
+     *   - size  : the bit size of p
+     *   - name  : the curve domain name
      * 
      */
-    ecfp.curveSpecs = {
+    ecfp.curveDomainSpecs = {
         /** secp256k1 */
         secp256k1: {
+            name:  "secp256k1",
+            size:  256,
             a:     "000",
             b:     "007",
             p:     "00fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
@@ -145,8 +147,34 @@ UCrypt.ECFp ||  (function (undefined) {
             n:     "00fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141",
             h:     "001"
         },
-        /** secp256k1 */
+        /** secp256r1*/
+        secp256r1: {
+            name:  "secp256r1",
+            size:  256,
+            a:     "00ffffffff00000001000000000000000000000000fffffffffffffffffffffffc",
+            b:     "005ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b",
+            p:     "00ffffffff00000001000000000000000000000000ffffffffffffffffffffffff",
+            Gx:    "006b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296",
+            Gy:    "004fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5",
+            n:     "00ffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551",
+            h:     "001"
+        },
+        /** secp192k1*/
+        secp192k1: {
+            name:  "secp192k1",
+            size:  192,
+            a:     "000",
+            b:     "003",
+            p:     "00fffffffffffffffffffffffffffffffffffffffeffffee37",
+            Gx:    "00db4ff10ec057e9ae26b07d0280b7f4341da5d1b1eae06c7d",
+            Gy:    "009b2f2f6d9c5628a7844163d015be86344082aa88d95e2f9d",
+            n:     "00fffffffffffffffffffffffe26f2fc170f69466a74defd8d",
+            h:     "001"
+        },
+        /** secp192r1 */
         secp192r1: {
+            name:  "secp192r1",
+            size:  256,
             a:     "00fffffffffffffffffffffffffffffffefffffffffffffffc",
             b:     "0064210519e59c80e70fa7e9ab72243049feb8deecc146b9b1",
             p:     "00fffffffffffffffffffffffffffffffeffffffffffffffff",
@@ -157,6 +185,8 @@ UCrypt.ECFp ||  (function (undefined) {
         },
         /** secp160k1 */
         secp160k1: {
+            name:  "secp160k1",
+            size:  160,
             a:     "000",
             b:     "007",
             p:     "00fffffffffffffffffffffffffffffffeffffac73",
@@ -165,28 +195,10 @@ UCrypt.ECFp ||  (function (undefined) {
             n:     "00100000000000000000001b8fa16dfab9aca16b6b3",
             h:     "001"
         },
-        /** secp256r1*/
-        secp256r1: {
-            a:     "00ffffffff00000001000000000000000000000000fffffffffffffffffffffffc",
-            b:     "005ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b",
-            p:     "00ffffffff00000001000000000000000000000000ffffffffffffffffffffffff",
-            Gx:    "006b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296",
-            Gy:    "004fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5",
-            n:     "00ffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551",
-            h:     "001"
-        },
-        /** secp160r2*/
-        secp160r2: {
-            a:     "00fffffffffffffffffffffffffffffffeffffac70",
-            b:     "00b4e134d3fb59eb8bab57274904664d5af50388ba",
-            p:     "00fffffffffffffffffffffffffffffffeffffac73",
-            Gx:    "0052dcb034293a117e1f4ff11b30f7199d3144ce6d",
-            Gy:    "00feaffef2e331f296e071fa0df9982cfea7d43f2e",
-            n:     "00100000000000000000000351ee786a818f3a1a16b",
-            h:     "001"
-        },
         /** secp160r1*/
         secp160r1: {
+            name:  "secp160r1",
+            size:  160,
             a:     "00ffffffffffffffffffffffffffffffff7ffffffc",
             b:     "001c97befc54bd7a8b65acf89f81d4d4adc565fa45",
             p:     "00ffffffffffffffffffffffffffffffff7fffffff",
@@ -195,18 +207,23 @@ UCrypt.ECFp ||  (function (undefined) {
             n:     "00100000000000000000001f4c8f927aed3ca752257",
             h:     "001"
         },
-        /** secp192k1*/
-        secp192k1: {
-            a:     "000",
-            b:     "003",
-            p:     "00fffffffffffffffffffffffffffffffffffffffeffffee37",
-            Gx:    "00db4ff10ec057e9ae26b07d0280b7f4341da5d1b1eae06c7d",
-            Gy:    "009b2f2f6d9c5628a7844163d015be86344082aa88d95e2f9d",
-            n:     "00fffffffffffffffffffffffe26f2fc170f69466a74defd8d",
+        /** secp160r2*/
+        secp160r2: {
+            name:  "secp160r2",
+            size:  160,
+            a:     "00fffffffffffffffffffffffffffffffeffffac70",
+            b:     "00b4e134d3fb59eb8bab57274904664d5af50388ba",
+            p:     "00fffffffffffffffffffffffffffffffeffffac73",
+            Gx:    "0052dcb034293a117e1f4ff11b30f7199d3144ce6d",
+            Gy:    "00feaffef2e331f296e071fa0df9982cfea7d43f2e",
+            n:     "00100000000000000000000351ee786a818f3a1a16b",
             h:     "001"
         },
+
         /** brainpoolp256r1*/
         brainpoolp256r1: {
+            name:  "brainpoolp256r1",
+            size:  256,
             a:     "007d5a0975fc2c3057eef67530417affe7fb8055c126dc5c6ce94a4b44f330b5d9",
             b:     "0026dc5c6ce94a4b44f330b5d9bbd77cbf958416295cf7e1ce6bccdc18ff8c07b6",
             p:     "00a9fb57dba1eea9bc3e660a909d838d726e3bf623d52620282013481d1f6e5377",
@@ -217,6 +234,8 @@ UCrypt.ECFp ||  (function (undefined) {
         },
         /** brainpoolp192r1*/
         brainpoolp192r1: {
+            name:  "brainpoolp192r1",
+            size:  192,
             a:     "006a91174076b1e0e19c39c031fe8685c1cae040e5c69a28ef",
             b:     "00469a28ef7c28cca3dc721d044f4496bcca7ef4146fbf25c9",
             p:     "00c302f41d932a36cda7a3463093d18db78fce476de1a86297",
@@ -227,6 +246,8 @@ UCrypt.ECFp ||  (function (undefined) {
         },
         /** brainpoolp256t1*/
         brainpoolp256t1: {
+            name:  "brainpoolp256t1",
+            size:  256,
             a:     "00a9fb57dba1eea9bc3e660a909d838d726e3bf623d52620282013481d1f6e5374",
             b:     "00662c61c430d84ea4fe66a7733d0b76b7bf93ebc4af2f49256ae58101fee92b04",
             p:     "00a9fb57dba1eea9bc3e660a909d838d726e3bf623d52620282013481d1f6e5377",
@@ -237,6 +258,8 @@ UCrypt.ECFp ||  (function (undefined) {
         },
         /** brainpoolp192t1*/
         brainpoolp192t1: {
+            name:  "brainpoolp192t1",
+            size:  192,
             a:     "00c302f41d932a36cda7a3463093d18db78fce476de1a86294",
             b:     "0013d56ffaec78681e68f9deb43b35bec2fb68542e27897b79",
             p:     "00c302f41d932a36cda7a3463093d18db78fce476de1a86297",
@@ -247,6 +270,8 @@ UCrypt.ECFp ||  (function (undefined) {
         },
         /** brainpoolp160r1*/
         brainpoolp160r1: {
+            name:  "brainpoolp160r1",
+            size:  160,
             a:     "00340e7be2a280eb74e2be61bada745d97e8f7c300",
             b:     "001e589a8595423412134faa2dbdec95c8d8675e58",
             p:     "00e95e4a5f737059dc60dfc7ad95b3d8139515620f",
@@ -257,6 +282,8 @@ UCrypt.ECFp ||  (function (undefined) {
         },
         /** brainpoolp160t1*/
         brainpoolp160t1: {
+            name:  "brainpoolp160t1",
+            size:  160,
             a:     "00e95e4a5f737059dc60dfc7ad95b3d8139515620c",
             b:     "007a556b6dae535b7b51ed2c4d7daa7a0b5c55f380",
             p:     "00e95e4a5f737059dc60dfc7ad95b3d8139515620f",
@@ -265,8 +292,11 @@ UCrypt.ECFp ||  (function (undefined) {
             n:     "00e95e4a5f737059dc60df5991d45029409e60fc09",
             h:     "001"
         },
+
         /** P_256*/
         P_256: {
+            name:  "P_256",
+            size:  256,
             a:     "00ffffffff00000001000000000000000000000000fffffffffffffffffffffffc",
             b:     "005ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b",
             p:     "00ffffffff00000001000000000000000000000000ffffffffffffffffffffffff",
@@ -277,6 +307,8 @@ UCrypt.ECFp ||  (function (undefined) {
         },
         /** P_192*/
         P_192: {
+            name:  "P_192",
+            size:  192,
             a:     "00fffffffffffffffffffffffffffffffefffffffffffffffc",
             b:     "0064210519e59c80e70fa7e9ab72243049feb8deecc146b9b1",
             p:     "00fffffffffffffffffffffffffffffffeffffffffffffffff",
@@ -286,8 +318,6 @@ UCrypt.ECFp ||  (function (undefined) {
             h:     "001"
         },
     };
-        
-        
     
     /**
      * class container for a,b,p.
@@ -319,7 +349,7 @@ UCrypt.ECFp ||  (function (undefined) {
     ecfp.EcFpDomain = function(curve, G,order,cofactor) {
         if ((!(curve instanceof ecfp.EcFpCurve)) ||
             (!(G instanceof ecfp.AffinePoint))) {
-            throw "Invalid paramerter type";
+            throw new UCrypt.UCryptException("Invalid paramerter type");
         }
         /** {EcFpCurve} curve */
         this.curve    = curve;
@@ -337,7 +367,7 @@ UCrypt.ECFp ||  (function (undefined) {
      */
     ecfp.getEcDomainBySpec = function(spec) {
         if (!spec) {
-            throw "Invalid undefined domain specification";
+            throw new UCrypt.UCryptException("Invalid undefined domain specification");
         }
         var curve = new ecfp.EcFpCurve( new BigInteger(spec.a,16),
                                         new BigInteger(spec.b,16),
@@ -359,7 +389,7 @@ UCrypt.ECFp ||  (function (undefined) {
      * @memberof UCrypt.ECFp
      */
     ecfp.getEcDomainByName = function (name) {        
-        return  ecfp.getEcDomainBySpec(ecfp.curveSpecs[name]);
+        return  ecfp.getEcDomainBySpec(ecfp.curveDomainSpecs[name]);
     };
 
 
@@ -379,9 +409,9 @@ UCrypt.ECFp ||  (function (undefined) {
     ecfp.AffinePoint = function (x, y, curve) {
         if ((curve != undefined) &&
             !(curve instanceof ecfp.EcFpCurve)) {
-            throw "Invalid paramerter type";
+            throw new UCrypt.UCryptException("Invalid paramerter type");
         }
-
+        
         /**
          * x coordinate.
          * @public
@@ -434,11 +464,31 @@ UCrypt.ECFp ||  (function (undefined) {
             var thisProj    = this.toProjective();
             point    = point.toProjective();
             if (!(point instanceof ecfp.ProjectivePoint)) {
-                throw "Invalid paramerter type";
+                throw new UCrypt.UCryptException("Invalid paramerter type");
             }
             thisProj.add(point);
             return thisProj.toAffine();
-        };  
+        };
+
+        /**
+         * Return the compressed form of this point: [04 x y].
+         *
+         * @return  {byte[]} uncompressed point form
+         */
+        this.getUncompressedForm = function() {
+            if (this._curve == undefined) {
+                throw new UCrypt.UCryptException("Curve not set");
+            }
+            var l = UCrypt.utils.upper8(this._curve.field.bitLength);
+            var compressed = [];
+            compressed.append([4]);
+            compressed.append(UCrypt.utils.normalizeByteArrayUL(this.x.toByteArray(), l));
+            compressed.append(UCrypt.utils.normalizeByteArrayUL(this.y.toByteArray(), l));
+            return compressed;
+        };
+        
+        
+
     };
 
     // --------------------------------------------------------------------------
@@ -456,7 +506,7 @@ UCrypt.ECFp ||  (function (undefined) {
     ecfp.ProjectivePoint = function(x,y,z,curve) {
         if ((curve != undefined) &&
             !(curve instanceof ecfp.EcFpCurve)) {
-            throw "Invalid paramerter type";
+            throw new UCrypt.UCryptException("Invalid paramerter type");
         }
         
         /**
@@ -504,7 +554,7 @@ UCrypt.ECFp ||  (function (undefined) {
              */
             point    = point.toProjective();
             if (!(point instanceof ecfp.ProjectivePoint)) {
-                throw "Invalid paramerter type";
+                throw new UCrypt.UCryptException("Invalid paramerter type");
             }
             var p = this._curve.field;
             
@@ -590,6 +640,15 @@ UCrypt.ECFp ||  (function (undefined) {
         this.isInfinityPoint = function() {
             return this.z.equals(BigInteger.ZERO);
         };
+
+        /**
+         * Return the uncompressed form of this point: [04 x y].
+         *
+         * @return  {byte[]} uncompressed point form
+         */
+        this.getUncompressedForm = function() {
+            return this.toAffine().getUncompressedForm();
+        };
     };
 
 
@@ -611,7 +670,7 @@ UCrypt.ECFp ||  (function (undefined) {
      */
      UCrypt.key.EcFpPublicKey = function (size, domain, point) {
          if (!(domain instanceof UCrypt.ECFp.EcFpDomain)) {
-             throw "Invalid paramerter type";
+             throw new UCrypt.UCryptException("Invalid paramerter type");
          }
 
          /**
@@ -644,7 +703,7 @@ UCrypt.ECFp ||  (function (undefined) {
      */
      UCrypt.key.EcFpPrivateKey = function(size,domain, scalar) {
         if (!(domain instanceof UCrypt.ECFp.EcFpDomain)) {
-            throw "Invalid paramerter type";
+            throw new UCrypt.UCryptException("Invalid paramerter type");
         }
         /**
           * key size in bits

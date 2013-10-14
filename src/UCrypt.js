@@ -66,6 +66,7 @@ var UCrypt = UCrypt || (function (undefined) {
      */
     Array.prototype.append =   Array.prototype.append || function(array) {
         this.push.apply(this, array);
+        return this;
     };
 
 

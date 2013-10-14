@@ -28,12 +28,16 @@ UCrypt.utils ||  (function (undefined) {
     /** 
      * @lends UCrypt.utils
      */
-    utils = {};
+    UCrypt.utils = {};
 
     /** 
-     * @params {string} str 
+     * Convert a string to byte array. 
+     *
+     * Each value at index 'i' in the created byte array is char code at the character at the same index in the given string.
+     *
+     * @param {string} str 
      */
-    utils.strToByteArray = function(str) {
+    UCrypt.utils.strToByteArray = function(str) {
         var b=[];
         var len = str.length;
         for (var i=0; i<len; i++) {
@@ -42,10 +46,14 @@ UCrypt.utils ||  (function (undefined) {
         return b;
     };
 
-     /** 
-     * @params {string} str 
+    /** 
+     * Convert an hex decimal string to byte arrat.
+     *
+     * Exemple "0A10" will be converted to [10, 16]
+     *
+     * @param {string} hex string
      */
-   utils.hexStrToByteArray = function(str) {
+   UCrypt.utils.hexStrToByteArray = function(str) {
         if (str.length & 1 ) {
             str = "0"+str;
         }
@@ -58,9 +66,13 @@ UCrypt.utils ||  (function (undefined) {
     };
 
     /** 
-     * @params {byte[]} arr
+     * Convert a byte array to hex string. 
+     *
+     * Exemple [10, 16] will be converted to "0A10".
+     *
+     * @param {byte[]} arr
      */
-    utils.byteArrayToHexStr = function(arr) {
+    UCrypt.utils.byteArrayToHexStr = function(arr) {
         var len = arr.length;
         var str = "";
         for (var i = 0; i<len; i++) {
@@ -75,9 +87,11 @@ UCrypt.utils ||  (function (undefined) {
     };
 
     /** 
-     * @params {byte[]|hexstring|number} arr
+     * Convert the given argument to a big Integer.
+     *
+     * @param {byte[]|hexstring|number} arr
      */
-    utils.anyToBigInteger = function(any) {
+    UCrypt.utils.anyToBigInteger = function(any) {
         if (any instanceof BigInteger) {
             return any;
         }
@@ -85,24 +99,26 @@ UCrypt.utils ||  (function (undefined) {
             return new BigInteger(any,16);
         }
         if (any instanceof Array) {
-            return new BigInteger(utils.byteArrayToHexStr(any),16);
+            return new BigInteger(UCrypt.utils.byteArrayToHexStr(any),16);
         }
         if (typeof any=="number") {
             return new BigInteger(any.toStringf(16));
         }
-        throw "Invalid parameter type:"+any;
+        throw new UCrypt.UCryptException("Invalid parameter type:"+any);
     };
 
     /** 
-     * @params {byte[]|hexstring|number} arr
+     * Convert the given argument to a byte array.
+     *
+     * @param {byte[]|hexstring|number} arr
      */
-    utils.anyToByteArray = function(any) {    
+    UCrypt.utils.anyToByteArray = function(any) {    
         
         if (any == undefined) {
             return [];
         }
         if (typeof any =="string") {
-            return utils.hexStrToByteArray(any);
+            return UCrypt.utils.hexStrToByteArray(any);
         }
         if (any instanceof Array) {
             return any;
@@ -110,14 +126,17 @@ UCrypt.utils ||  (function (undefined) {
         if (typeof any=="number") {
             return [any&0xFF];
         }
-        throw "Invalid paramerter type:"+any;
+        throw new UCrypt.UCryptException("Invalid paramerter type:"+any);
     };
 
     /** 
-     * @params {byte[]} ba
-     * @params {number} len
+     * Given a byte array, it removes or adds leading zero to reach the given length.
+     * Moreover all byte are masked with 0xFF, to convert all byte to range [0-255]
+     * 
+     * @param {byte[]} input byte array
+     * @param {number} expected length
      */
-     utils.normalizeByteArrayUL = function(ba,len) {
+    UCrypt.utils.normalizeByteArrayUL = function(ba,len) {
         if (len == undefined) {
             len = ba.length;
         }
@@ -137,5 +156,11 @@ UCrypt.utils ||  (function (undefined) {
         return a;
     };
 
-    UCrypt.utils = utils;
+    /**
+     * @private
+     */
+    UCrypt.utils.upper8 = function (x) {
+        return (x+7)& (~7); 
+    };
+
 }());

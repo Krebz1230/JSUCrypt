@@ -61,7 +61,7 @@ UCrypt.keyagreement.ECDH_SVDP  ||  (function (undefined) {
      */
     UCrypt.keyagreement.ECDH_SVDP = function (key) {
         if (!(key instanceof UCrypt.key.EcFpPrivateKey)){ 
-            throw "Invalid parameter type";
+            throw new UCrypt.UCryptException("Invalid parameter type");
         }
         this.key = key;
     };
@@ -77,7 +77,7 @@ UCrypt.keyagreement.ECDH_SVDP  ||  (function (undefined) {
     UCrypt.keyagreement.ECDH_SVDP.prototype.generate = function(otherPoint) {
         if (!(otherPoint instanceof UCrypt.ECFp.AffinePoint) &&
             !(otherPoint instanceof UCrypt.ECFp.ProjectivePoint)) {
-            throw "Invalid parameter type";
+            throw new UCrypt.UCryptException("Invalid parameter type");
         }
         
         var point = otherPoint.multiply(this.key.d);

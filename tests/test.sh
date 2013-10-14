@@ -26,6 +26,7 @@ files="
 #../dist/aes.js
 #../dist/md5.js
 
+#RHINO="rhino-debugger"
 RHINO="rhino"
 ${RHINO}  -strict  `for x in $files; do echo -f $x; done` test.js
 
