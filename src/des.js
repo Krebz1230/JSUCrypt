@@ -16,7 +16,7 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
@@ -24,24 +24,24 @@ limitations under the License.
 
 
 
-((UCrypt.signature && UCrypt.signature.DES) && (UCrypt.ciper && UCrypt.ciper.DES)) || (function (undefined) {
+((JSUCrypt.signature && JSUCrypt.signature.DES) && (JSUCrypt.ciper && JSUCrypt.ciper.DES)) || (function (undefined) {
 
     // --------------------------------------------------------------------------
     //                                   Signature
     // --------------------------------------------------------------------------
-    if (UCrypt.signature && !UCrypt.signature.DES) {
+    if (JSUCrypt.signature && !JSUCrypt.signature.DES) {
         /** 
          * An DES Signature
-         * @lends  UCrypt.signature.DES 
+         * @lends  JSUCrypt.signature.DES 
          * @class 
-         * @parameter {UCrypt.padder} padder       a padder
+         * @parameter {JSUCrypt.padder} padder       a padder
          * @parameter {number}        chain_mode   ECB, CBC, ....
-         * @see UCrypt.cipher
-         * @see UCrypt.padder
+         * @see JSUCrypt.cipher
+         * @see JSUCrypt.padder
          */
         var sigdes = function(padder, chain_mode) {
             if(!padder) {
-                padder = UCrypt.padder.None;
+                padder = JSUCrypt.padder.None;
             }
             this._padder = padder;
             this._chain_mode = chain_mode;
@@ -50,12 +50,12 @@ limitations under the License.
 
  
         /**
-         * @see UCrypt.signature#init
+         * @see JSUCrypt.signature#init
          */
         sigdes.prototype.init = function(key, mode, IV) {
-            if ((mode != UCrypt.signature.MODE_SIGN) && 
-                (mode != UCrypt.signature.MODE_VERIFY)){
-                throw new UCrypt.UCryptException("Invalid 'mode' parameter");
+            if ((mode != JSUCrypt.signature.MODE_SIGN) && 
+                (mode != JSUCrypt.signature.MODE_VERIFY)){
+                throw new JSUCrypt.JSUCryptException("Invalid 'mode' parameter");
             }            
             _setKey.call(this, key, EN0);
             _setIV.call(this, IV);
@@ -64,49 +64,49 @@ limitations under the License.
         };
         
         /**
-         * @see UCrypt.signature#reset
+         * @see JSUCrypt.signature#reset
          * @function
          */
-        sigdes.prototype.reset             = UCrypt.signature._symReset;
+        sigdes.prototype.reset             = JSUCrypt.signature._symReset;
         /**
-         * @see UCrypt.signature#update
+         * @see JSUCrypt.signature#update
          * @function
          */       
-        sigdes.prototype.update            = UCrypt.signature._symUpdate;
+        sigdes.prototype.update            = JSUCrypt.signature._symUpdate;
         /**
-         * @see UCrypt.signature#sign
+         * @see JSUCrypt.signature#sign
          * @function
          */
-        sigdes.prototype.sign              = UCrypt.signature._symSign;
+        sigdes.prototype.sign              = JSUCrypt.signature._symSign;
         /**
-         * @see UCrypt.signature#verify
+         * @see JSUCrypt.signature#verify
          * @function
          */
-        sigdes.prototype.verify            = UCrypt.signature._symVerify;
+        sigdes.prototype.verify            = JSUCrypt.signature._symVerify;
 
         sigdes.prototype._doEncryptBlock   = _doCrypt;
         sigdes.prototype._blockSize        = 8;
 
-        UCrypt.signature.DES = sigdes;
+        JSUCrypt.signature.DES = sigdes;
 
     }
 
     // --------------------------------------------------------------------------
     //                                   Cipher
     // --------------------------------------------------------------------------
-    if (UCrypt.cipher && !UCrypt.cipher.DES) {
+    if (JSUCrypt.cipher && !JSUCrypt.cipher.DES) {
         /** 
          * An DES Cipher
-         * @lends  UCrypt.cipher.DES
+         * @lends  JSUCrypt.cipher.DES
          * @class 
-         * @parameter {UCrypt.padder} padder       a padder
+         * @parameter {JSUCrypt.padder} padder       a padder
          * @parameter {number}        chain_mode   ECB, CBC, ....
-         * @see UCrypt.cipher
-         * @see UCrypt.padder
+         * @see JSUCrypt.cipher
+         * @see JSUCrypt.padder
          */
         var ciphdes = function(padder, chain_mode) {
             if(!padder) {
-                padder = UCrypt.padder.None;
+                padder = JSUCrypt.padder.None;
             }
             this._padder = padder;
             this._chain_mode = chain_mode;
@@ -114,16 +114,16 @@ limitations under the License.
         };
         
         /**
-         * @see UCrypt.cipher#init
+         * @see JSUCrypt.cipher#init
          */
         ciphdes.prototype.init = function(key, mode, IV) {      
             var enc_dec;
-            if (mode == UCrypt.cipher.MODE_ENCRYPT) {
+            if (mode == JSUCrypt.cipher.MODE_ENCRYPT) {
                 enc_dec = EN0;
-            } else if (mode == UCrypt.cipher.MODE_DECRYPT) {
+            } else if (mode == JSUCrypt.cipher.MODE_DECRYPT) {
                 enc_dec = DE1;
             } else {
-                throw new UCrypt.UCryptException("Invalid 'mode' parameter");
+                throw new JSUCrypt.JSUCryptException("Invalid 'mode' parameter");
             }            
             _setKey.call(this, key, enc_dec);
             _setIV.call(this,IV);
@@ -131,26 +131,26 @@ limitations under the License.
             this.reset();
         };
         /**
-         * @see UCrypt.cipher#reset
+         * @see JSUCrypt.cipher#reset
          * @function
          */
-        ciphdes.prototype.reset             = UCrypt.cipher._symReset;
+        ciphdes.prototype.reset             = JSUCrypt.cipher._symReset;
         /**
-         * @see UCrypt.cipher#update
+         * @see JSUCrypt.cipher#update
          * @function
          */
-        ciphdes.prototype.update            = UCrypt.cipher._symUpdate;
+        ciphdes.prototype.update            = JSUCrypt.cipher._symUpdate;
         /**
-         * @see UCrypt.cipher#finalize
+         * @see JSUCrypt.cipher#finalize
          * @function
          */
-        ciphdes.prototype.finalize          = UCrypt.cipher._symFinalize;
+        ciphdes.prototype.finalize          = JSUCrypt.cipher._symFinalize;
 
         ciphdes.prototype._blockSize        = 8;
         ciphdes.prototype._doEncryptBlock   = _doCrypt;
         ciphdes.prototype._doDecryptBlock   = _doCrypt;
 
-        UCrypt.cipher.DES    = ciphdes;
+        JSUCrypt.cipher.DES    = ciphdes;
     }
     
     
@@ -164,8 +164,8 @@ limitations under the License.
      * @param {anyBA}       key        key
      * @class
      */
-    UCrypt.key.DESKey = function (key) {
-        this.rawKey = UCrypt.utils.anyToByteArray(key);
+    JSUCrypt.key.DESKey = function (key) {
+        this.rawKey = JSUCrypt.utils.anyToByteArray(key);
     };
 
 
@@ -181,16 +181,16 @@ limitations under the License.
         } else if (k.length == 24) {
             des3key.call(this, k, m);
         } else {
-            throw new UCrypt.UCryptException("Invalid 'key' parameter");
+            throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
         }
         this._key = key;
     }
 
     function _setIV(IV) {
         if (IV) {
-            IV = UCrypt.utils.anyToByteArray(IV);
+            IV = JSUCrypt.utils.anyToByteArray(IV);
             if (IV.length != 8) {
-                throw new UCrypt.UCryptException("Invalid 'IV' parameter");
+                throw new JSUCrypt.JSUCryptException("Invalid 'IV' parameter");
             }
             this._IV = [].concat(IV);
         } else {

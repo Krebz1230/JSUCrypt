@@ -16,7 +16,7 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
@@ -33,7 +33,7 @@ limitations under the License.
  * 
  * To create an XXX hasher:
  * 
- *   - new UCrypt.hash.XXX()
+ *   - new JSUCrypt.hash.XXX()
  * 
  * Supported XXX cipher are:
  *  
@@ -46,40 +46,40 @@ limitations under the License.
  * 
  * example 1:
  *         
- *         var sha = new UCrypt.hash.SHA1();
+ *         var sha = new JSUCrypt.hash.SHA1();
  *         var h = sha.finalize("616263")
  *         
  * 
  * example 2:
  *         
- *         var sha = new UCrypt.hash.SHA1();
+ *         var sha = new JSUCrypt.hash.SHA1();
  *         sha.upate("61")*
  *         var h =  sha.finalize("6263")
  *         
  * 
  * example 3:
  *         
- *         var sha = new UCrypt.hash.SHA1();
+ *         var sha = new JSUCrypt.hash.SHA1();
  *         sha.upate("60")*
  *         sha.reset();
  *         var h =  sha.finalize("616263")
  *         
  * --------------------------------------------------------------------------
- * @namespace UCrypt.hash 
+ * @namespace JSUCrypt.hash 
  */
-UCrypt.hash  || (function (undefined) {
+JSUCrypt.hash  || (function (undefined) {
 
     /**
-     * @lends UCrypt.hash
+     * @lends JSUCrypt.hash
      */
     var hash = {
-        /** @class UCrypt.hash.SHA1 */
+        /** @class JSUCrypt.hash.SHA1 */
         SHA1: undefined,
-        /** @class UCrypt.hash.SHA224 */
+        /** @class JSUCrypt.hash.SHA224 */
         SHA224: undefined,
-        /** @class UCrypt.hash.SHA256 */
+        /** @class JSUCrypt.hash.SHA256 */
         SHA256: undefined,
-        /** @class UCrypt.hash.RIPEMD160 */
+        /** @class JSUCrypt.hash.RIPEMD160 */
         RIPEMD160: undefined,
     };
 
@@ -87,18 +87,18 @@ UCrypt.hash  || (function (undefined) {
      * Reinit hasher as it was just created.
      * The hasher is ready for new computation.
      *
-     * @name  UCrypt.hash#reset
+     * @name  JSUCrypt.hash#reset
      * @function
-     * @memberof UCrypt.hash
+     * @memberof JSUCrypt.hash
      * @abstract
      */
     /**
      * Add more data to the hash
      * @param {anyBA} [block] data to add before ending computation
      *
-     * @name  UCrypt.hash#update
+     * @name  JSUCrypt.hash#update
      * @function
-     * @memberof UCrypt.hash
+     * @memberof JSUCrypt.hash
      * @abstract
      */
      /**
@@ -106,9 +106,9 @@ UCrypt.hash  || (function (undefined) {
      * @param {anyBA} [block] data to add before ending computation
      * @returns {byte[]} hash
      *
-     * @name UCrypt.hash#finalize
+     * @name JSUCrypt.hash#finalize
      * @function
-     * @memberof UCrypt.hash
+     * @memberof JSUCrypt.hash
      * @abstract
      */
 
@@ -121,7 +121,7 @@ UCrypt.hash  || (function (undefined) {
 
 
    hash._update = function(block) {
-        block  = UCrypt.utils.anyToByteArray(block);
+        block  = JSUCrypt.utils.anyToByteArray(block);
         if (block == undefined)  {
             block = [];
         }
@@ -156,7 +156,7 @@ UCrypt.hash  || (function (undefined) {
     };
 
     hash._finalize = function(block) {
-        block  = UCrypt.utils.anyToByteArray(block);
+        block  = JSUCrypt.utils.anyToByteArray(block);
         if (block == undefined)  {
             block = [];
         }
@@ -216,5 +216,5 @@ UCrypt.hash  || (function (undefined) {
     };
 
     // --- Set it ---
-    UCrypt.hash = hash;
+    JSUCrypt.hash = hash;
 }());

@@ -16,18 +16,18 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
 
 
-UCrypt.hash.RIPEMD160 || (function(undefined) {
+JSUCrypt.hash.RIPEMD160 || (function(undefined) {
 
     // --- RIPEMD160 ---
     /** 
      * An SHA256 hasher
-     * @lends  UCrypt.hash.RIPEMD160
+     * @lends  JSUCrypt.hash.RIPEMD160
      * @class 
      */
     var RIPEMD160 = function() {
@@ -35,20 +35,20 @@ UCrypt.hash.RIPEMD160 || (function(undefined) {
     };
     
     /**
-     * @see UCrypt.hash#reset
+     * @see JSUCrypt.hash#reset
      * @function
      */
-    RIPEMD160.prototype.reset        = UCrypt.hash._reset;
+    RIPEMD160.prototype.reset        = JSUCrypt.hash._reset;
     /**
-     * @see UCrypt.hash#update
+     * @see JSUCrypt.hash#update
      * @function
      */
-    RIPEMD160.prototype.update       = UCrypt.hash._update;
+    RIPEMD160.prototype.update       = JSUCrypt.hash._update;
     /**
-     * @see UCrypt.hash#finalize
+     * @see JSUCrypt.hash#finalize
      * @function
      */
-    RIPEMD160.prototype.finalize     = UCrypt.hash._finalize;
+    RIPEMD160.prototype.finalize     = JSUCrypt.hash._finalize;
 
     RIPEMD160.prototype.PKCS1_OID    = [];
     RIPEMD160.prototype._BE          = false;
@@ -156,5 +156,5 @@ UCrypt.hash.RIPEMD160 || (function(undefined) {
     var hr =  [ 0x50A28BE6, 0x5C4DD124, 0x6D703EF3, 0x7A6D76E9, 0x00000000];
 
     //--- Set it ---
-    UCrypt.hash.RIPEMD160  = RIPEMD160;
+    JSUCrypt.hash.RIPEMD160  = RIPEMD160;
 }());

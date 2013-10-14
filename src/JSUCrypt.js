@@ -18,44 +18,44 @@ limitations under the License.
 */
 
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
 
 
 /**
- * UCrypt main space
- * @namespace UCrypt
+ * JSUCrypt main space
+ * @namespace JSUCrypt
  */
-var UCrypt = UCrypt || (function (undefined) {
+var JSUCrypt = JSUCrypt || (function (undefined) {
 
     /** 
-     * @lends UCrypt
+     * @lends JSUCrypt
      */
     var u = {};
 
     /**
-     * UCrypt version
+     * JSUCrypt version
      */
     u.version = "0.1.0";
 
     /**
-     * UCrypt exception class used by  UCrypt library.
-     * UCrypt functions does not throw explicitky other kind of exception.
+     * JSUCrypt exception class used by  JSUCrypt library.
+     * JSUCrypt functions does not throw explicitky other kind of exception.
      *
      * @param {string} wat Exception details
      * @class
      */
-    u.UCryptException = function(wat) {
+    u.JSUCryptException = function(wat) {
         this.why = wat;       
     };
     
     /** 
      * To string 
      */
-    u.UCryptException.prototype.toString = function() {
-        return "UCryptException: "+wat.toString();
+    u.JSUCryptException.prototype.toString = function() {
+        return "JSUCryptException: "+wat.toString();
     };
 
 

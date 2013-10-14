@@ -4,7 +4,7 @@
     },
     "source": {
         "include": [ "src/README.md",
-                     "src/UCrypt.js",
+                     "src/JSUCrypt.js",
                      "src/keys.js",  "src/cipher.js", "src/signature.js", "src/hash.js", "src/ka.js",
                      "src/pad.js", "src/ecfp.js",
                      "src/ecdsa.js",  "src/rsa.js", "src/des.js", 

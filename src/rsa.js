@@ -16,32 +16,32 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
 
 
 
-((UCrypt.signature && UCrypt.signature.RSA) && (UCrypt.cipher && UCrypt.cipher.RSA)) || (function (undefined) {
+((JSUCrypt.signature && JSUCrypt.signature.RSA) && (JSUCrypt.cipher && JSUCrypt.cipher.RSA)) || (function (undefined) {
 
     // --------------------------------------------------------------------------
     //                                   Signature
     // --------------------------------------------------------------------------
-    if (UCrypt.signature && !UCrypt.signature.RSA) {
+    if (JSUCrypt.signature && !JSUCrypt.signature.RSA) {
         /** 
          * An RSA Signature
-         * @lends  UCrypt.signature.RSA 
+         * @lends  JSUCrypt.signature.RSA 
          * @class 
-         * @parameter {UCrypt.hash}   hash       a hash
-         * @parameter {UCrypt.padder} padder     a padder
-         * @see UCrypt.signature
-         * @see UCrypt.hash
-         * @see UCrypt.padder
+         * @parameter {JSUCrypt.hash}   hash       a hash
+         * @parameter {JSUCrypt.padder} padder     a padder
+         * @see JSUCrypt.signature
+         * @see JSUCrypt.hash
+         * @see JSUCrypt.padder
          */
         var sigrsa = function(hash, padder) {        
             if(!padder) {
-                padder = UCrypt.padder.None;
+                padder = JSUCrypt.padder.None;
             }
             this._padder = padder;
             this._hash = hash; 
@@ -49,44 +49,44 @@ limitations under the License.
         };
 
         /**
-         * @see UCrypt.signature#init
+         * @see JSUCrypt.signature#init
          */    
         sigrsa.prototype.init = function(key, mode) {
-            if (mode == UCrypt.signature.MODE_SIGN) {
-                if ( (! key instanceof UCrypt.key.RSAPrivateKey) && 
-                     (! key instanceof UCrypt.key.CRTPrivateKey) ){
-                    throw new UCrypt.UCryptException("Invalid 'key' parameter");
+            if (mode == JSUCrypt.signature.MODE_SIGN) {
+                if ( (! key instanceof JSUCrypt.key.RSAPrivateKey) && 
+                     (! key instanceof JSUCrypt.key.CRTPrivateKey) ){
+                    throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
                 }
-            } else if (mode == UCrypt.signature.MODE_VERIFY) {
-                if ( ! key instanceof UCrypt.key.RSAPublicKey) {
-                    throw new UCrypt.UCryptException("Invalid 'key' parameter");
+            } else if (mode == JSUCrypt.signature.MODE_VERIFY) {
+                if ( ! key instanceof JSUCrypt.key.RSAPublicKey) {
+                    throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
                 }
             } else {
-                throw new UCrypt.UCryptException("Invalid 'mode' parameter");
+                throw new JSUCrypt.JSUCryptException("Invalid 'mode' parameter");
             }
             this._key = key;
             this._mode = mode;
         };
         /**
-         * @see UCrypt.signature#reset
+         * @see JSUCrypt.signature#reset
          * @function
          */
-        sigrsa.prototype.reset     = UCrypt.signature._asymReset;
+        sigrsa.prototype.reset     = JSUCrypt.signature._asymReset;
         /**
-         * @see UCrypt.signature#update
+         * @see JSUCrypt.signature#update
          * @function
          */
-        sigrsa.prototype.update    = UCrypt.signature._asymUpdate;
+        sigrsa.prototype.update    = JSUCrypt.signature._asymUpdate;
         /**
-         * @see UCrypt.signature#sign
+         * @see JSUCrypt.signature#sign
          * @function
          */
-        sigrsa.prototype.sign      = UCrypt.signature._asymSign;
+        sigrsa.prototype.sign      = JSUCrypt.signature._asymSign;
         /**
-         * @see UCrypt.signature#verify
+         * @see JSUCrypt.signature#verify
          * @function
          */
-        sigrsa.prototype.verify    = UCrypt.signature._asymVerify;
+        sigrsa.prototype.verify    = JSUCrypt.signature._asymVerify;
 
 
         sigrsa.prototype._doSign = function (h) {            
@@ -96,17 +96,17 @@ limitations under the License.
             blk = [].concat(this._hash.PKCS1_OID).concat(h);
             blk = this._padder.pad(blk, this._key.size/8, false);
             //sign
-            blk = UCrypt.utils.anyToBigInteger(blk);
+            blk = JSUCrypt.utils.anyToBigInteger(blk);
             blk = blk.modPow(this._key.d,this._key.n);
-            return UCrypt.utils.normalizeByteArrayUL(blk.toByteArray(),klen);
+            return JSUCrypt.utils.normalizeByteArrayUL(blk.toByteArray(),klen);
         };
 
         sigrsa.prototype._doVerify = function (h, sig) {
             var klen = this._key.size/8;
             //decrypt
-            var blk = UCrypt.utils.anyToBigInteger(sig);
+            var blk = JSUCrypt.utils.anyToBigInteger(sig);
             blk = blk.modPow(this._key.e,this._key.n);
-            blk = UCrypt.utils.normalizeByteArrayUL(blk.toByteArray(),klen);
+            blk = JSUCrypt.utils.normalizeByteArrayUL(blk.toByteArray(),klen);
             //add missing zero
             
             blk = this._padder.unpad(blk, klen, false);
@@ -139,75 +139,75 @@ limitations under the License.
             return true;
         };
 
-        UCrypt.signature.RSA  = sigrsa;
+        JSUCrypt.signature.RSA  = sigrsa;
     }
 
     // --------------------------------------------------------------------------
     //                                   Cipher
     // --------------------------------------------------------------------------
-    if (UCrypt.cipher && !UCrypt.cipher.RSA) {
+    if (JSUCrypt.cipher && !JSUCrypt.cipher.RSA) {
         /** 
          * An RSA Cipher
-         * @lends  UCrypt.cipher.RSA 
+         * @lends  JSUCrypt.cipher.RSA 
          * @class 
-         * @parameter {UCrypt.padder} padder       a padder
-         * @see UCrypt.cipher
-         * @see UCrypt.padder
+         * @parameter {JSUCrypt.padder} padder       a padder
+         * @see JSUCrypt.cipher
+         * @see JSUCrypt.padder
          */
         var ciphrsa = function(padder) {       
             if(!padder) {                
-                padder = UCrypt.padder.None;
+                padder = JSUCrypt.padder.None;
             }
             this._padder = padder;
             this.reset();
         };
 
         /**
-         * @see UCrypt.cipher#init
+         * @see JSUCrypt.cipher#init
          */
         ciphrsa.prototype.init = function(key, mode) {
-            if (mode == UCrypt.cipher.MODE_DECRYPT) {
-                if ( (! key instanceof UCrypt.key.RSAPrivateKey) && 
-                     (! key instanceof UCrypt.key.CRTPrivateKey) ){
-                    throw new UCrypt.UCryptException("Invalid 'key' parameter");
+            if (mode == JSUCrypt.cipher.MODE_DECRYPT) {
+                if ( (! key instanceof JSUCrypt.key.RSAPrivateKey) && 
+                     (! key instanceof JSUCrypt.key.CRTPrivateKey) ){
+                    throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
                 }
-            } else if (mode == UCrypt.cipher.MODE_ENCRYPT) {
-                if ( ! key instanceof UCrypt.key.RSAPublicKey) {
-                    throw new UCrypt.UCryptException("Invalid 'key' parameter");
+            } else if (mode == JSUCrypt.cipher.MODE_ENCRYPT) {
+                if ( ! key instanceof JSUCrypt.key.RSAPublicKey) {
+                    throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
                 }
             } else {
-                throw new UCrypt.UCryptException("Invalid 'mode' parameter");
+                throw new JSUCrypt.JSUCryptException("Invalid 'mode' parameter");
             }
             this._key = key;
             this._enc_mode = mode;
         };
         
         /**
-         * @see UCrypt.cipher#reset
+         * @see JSUCrypt.cipher#reset
          * @function
          */
-        ciphrsa.prototype.reset     = UCrypt.cipher._asymReset;
+        ciphrsa.prototype.reset     = JSUCrypt.cipher._asymReset;
         /**
-         * @see UCrypt.cipher#update
+         * @see JSUCrypt.cipher#update
          * @function
          */
-        ciphrsa.prototype.update    = UCrypt.cipher._asymUpdate;
+        ciphrsa.prototype.update    = JSUCrypt.cipher._asymUpdate;
         /**
-         * @see UCrypt.cipher#finalize
+         * @see JSUCrypt.cipher#finalize
          * @function
          */
-        ciphrsa.prototype.finalize  = UCrypt.cipher._asymFinalize;
+        ciphrsa.prototype.finalize  = JSUCrypt.cipher._asymFinalize;
 
         ciphrsa.prototype._doCrypt  = function(data) {
             var klen = this._key.size/8;
             //padd
             var blk;            
             blk = this._padder.pad(data, klen, true);
-            blk = UCrypt.utils.anyToBigInteger(blk);
+            blk = JSUCrypt.utils.anyToBigInteger(blk);
             //crypt
-            blk = UCrypt.utils.anyToBigInteger(blk);
+            blk = JSUCrypt.utils.anyToBigInteger(blk);
             blk = blk.modPow(this._key.e,this._key.n);
-            blk = UCrypt.utils.normalizeByteArrayUL(blk.toByteArray(),klen);
+            blk = JSUCrypt.utils.normalizeByteArrayUL(blk.toByteArray(),klen);
             return blk;
         };
 
@@ -215,15 +215,15 @@ limitations under the License.
             var klen = this._key.size/8;
             //decrypt
             var blk;
-            blk = UCrypt.utils.anyToBigInteger(data);
+            blk = JSUCrypt.utils.anyToBigInteger(data);
             blk = blk.modPow(this._key.d,this._key.n);
-            blk = UCrypt.utils.normalizeByteArrayUL(blk.toByteArray(),klen);
+            blk = JSUCrypt.utils.normalizeByteArrayUL(blk.toByteArray(),klen);
             //unpadd
             blk = this._padder.unpad(blk, klen, true);
             return blk;            
         };
 
-        UCrypt.cipher.RSA     = ciphrsa; 
+        JSUCrypt.cipher.RSA     = ciphrsa; 
 
     }
     
@@ -240,10 +240,10 @@ limitations under the License.
      * @param {anyBN}       n        modulus
      * @class
      */
-    UCrypt.key.RSAPublicKey = function (size, e, n) {       
+    JSUCrypt.key.RSAPublicKey = function (size, e, n) {       
         this.size     = size;
-        this.e        = UCrypt.utils.anyToBigInteger(e);
-        this.n        = UCrypt.utils.anyToBigInteger(n);
+        this.e        = JSUCrypt.utils.anyToBigInteger(e);
+        this.n        = JSUCrypt.utils.anyToBigInteger(n);
     };
     
     /**
@@ -254,10 +254,10 @@ limitations under the License.
      * @param {anyBN}       n        modulus
      * @class     
      */
-    UCrypt.key.RSAPrivateKey = function(size, d, n) {
+    JSUCrypt.key.RSAPrivateKey = function(size, d, n) {
         this.size     = size;
-        this.d        = UCrypt.utils.anyToBigInteger(d);
-        this.n        = UCrypt.utils.anyToBigInteger(n);
+        this.d        = JSUCrypt.utils.anyToBigInteger(d);
+        this.n        = JSUCrypt.utils.anyToBigInteger(n);
     };
 
     /**
@@ -271,13 +271,13 @@ limitations under the License.
      * @param {anyBN}       qinv     
      * @class
      */
-    UCrypt.key.RSACRTPrivateKey = function(size, p, q, dp, dq, qinv) {
+    JSUCrypt.key.RSACRTPrivateKey = function(size, p, q, dp, dq, qinv) {
         this.size     = size;
-        this.p        = UCrypt.utils.anyToBigInteger(p);
-        this.q        = UCrypt.utils.anyToBigInteger(q);
-        this.dp       = UCrypt.utils.anyToBigInteger(dp);
-        this.dq       = UCrypt.utils.anyToBigInteger(dq);
-        this.qinv     = UCrypt.utils.anyToBigInteger(qinv);
+        this.p        = JSUCrypt.utils.anyToBigInteger(p);
+        this.q        = JSUCrypt.utils.anyToBigInteger(q);
+        this.dp       = JSUCrypt.utils.anyToBigInteger(dp);
+        this.dq       = JSUCrypt.utils.anyToBigInteger(dq);
+        this.qinv     = JSUCrypt.utils.anyToBigInteger(qinv);
     };
 
 }());

@@ -1,4 +1,4 @@
-UCrypt
+JSUCrypt
 ======
 
 ## Introduction

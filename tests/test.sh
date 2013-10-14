@@ -6,7 +6,7 @@ cd `dirname tests/test.sh`
 files="
 ../dist/lib/jsbn/jsbn.js
 ../dist/lib/jsbn/jsbn2.js
-../dist/lib/UCrypt.js
+../dist/lib/JSUCrypt.js
 ../dist/lib/helpers.js
 ../dist/lib/hash.js
 ../dist/lib/pad.js

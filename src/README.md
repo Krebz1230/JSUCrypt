@@ -11,7 +11,7 @@ The main goals of the library are:
      - easy to reduce
      - easy to use for prototyping and research.
     
-This beta release of UCrypt does not feature performance at main goal, but it's not a naive implementation....
+This beta release of JSUCrypt does not feature performance at main goal, but it's not a naive implementation....
 
 
 ## About types
@@ -44,7 +44,7 @@ Insert something like that in your html page:
 
         <script type="text/javascript" src="jsbn/jsbn.js"></script>
         <script type="text/javascript" src="jsbn/jsbn2.js"></script>
-        <script type="text/javascript" src="UCrypt.js"></script>
+        <script type="text/javascript" src="JSUCrypt.js"></script>
         <script type="text/javascript" src="helpers.js"></script>
         <script type="text/javascript" src="pad.js"></script>
         <script type="text/javascript" src="cipher.js"></script>

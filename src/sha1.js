@@ -16,18 +16,18 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
 
 
 
-UCrypt.hash.SHA1 || (function(undefined) {
+JSUCrypt.hash.SHA1 || (function(undefined) {
 
     /** 
      * An SHA1 hasher
-     * @lends  UCrypt.hash.SHA1
+     * @lends  JSUCrypt.hash.SHA1
      * @class 
      */
     var SHA1 = function() {
@@ -35,20 +35,20 @@ UCrypt.hash.SHA1 || (function(undefined) {
     };
 
     /**
-     * @see UCrypt.hash#reset
+     * @see JSUCrypt.hash#reset
      * @function
      */
-    SHA1.prototype.reset        = UCrypt.hash._reset;
+    SHA1.prototype.reset        = JSUCrypt.hash._reset;
     /**
-     * @see UCrypt.hash#update
+     * @see JSUCrypt.hash#update
      * @function
      */
-    SHA1.prototype.update       = UCrypt.hash._update;
+    SHA1.prototype.update       = JSUCrypt.hash._update;
     /**
-     * @see UCrypt.hash#finalize
+     * @see JSUCrypt.hash#finalize
      * @function
      */
-    SHA1.prototype.finalize     = UCrypt.hash._finalize;
+    SHA1.prototype.finalize     = JSUCrypt.hash._finalize;
 
     SHA1.prototype.PKCS1_OID    = [ 0x30, 0x21, 0x30, 0x09, 0x06, 0x05, 0x2b, 0x0e, 0x03, 0x02, 0x1a, 0x05, 0x00, 0x04, 0x14];
     SHA1.prototype._BE          = true;
@@ -109,5 +109,5 @@ UCrypt.hash.SHA1 || (function(undefined) {
 
     
     // --- Set it ---
-    UCrypt.hash.SHA1 = SHA1;
+    JSUCrypt.hash.SHA1 = SHA1;
 }());

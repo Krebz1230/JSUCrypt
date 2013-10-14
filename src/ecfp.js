@@ -16,7 +16,7 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
@@ -24,13 +24,13 @@ limitations under the License.
 
 /** 
  * 
- * Elliptic Curver over Fp is used for ECDSA. The _UCrypt.ECFp_ provide APIs to deals with curves, point and keys over Fp.
- * The _UCrypt.ECFp_ deals with curve of the form y³ = a.x²+b.x+c over Fp.
+ * Elliptic Curver over Fp is used for ECDSA. The _JSUCrypt.ECFp_ provide APIs to deals with curves, point and keys over Fp.
+ * The _JSUCrypt.ECFp_ deals with curve of the form y³ = a.x²+b.x+c over Fp.
  * 
  * 
  * ## Curve
  * 
- * Curve can created with the constructor  UCrypt.ECFp.EcFpCurve(a,b,p),
+ * Curve can created with the constructor  JSUCrypt.ECFp.EcFpCurve(a,b,p),
  * where a,b,p are big-number defining the curve parameter 
  * 
  * 
@@ -40,34 +40,34 @@ limitations under the License.
  * 
  * Domain can be either explicitly build or retrieved from the well known domain set. 
  * 
- * The well known domain list is given by _UCrypt.ECFp.curveNames_ and specific domain can be
- * retrieved with the _UCrypt.ECFp.getEcDomainByName_ function.
+ * The well known domain list is given by _JSUCrypt.ECFp.curveNames_ and specific domain can be
+ * retrieved with the _JSUCrypt.ECFp.getEcDomainByName_ function.
  * 
  *         
- *         domain =  UCrypt.ECFp.getEcDomainByName("secp256k1");
+ *         domain =  JSUCrypt.ECFp.getEcDomainByName("secp256k1");
  *         
  * 
- * Domain specification details can is available in _UCrypt.ECFp.curveSpecs_
+ * Domain specification details can is available in _JSUCrypt.ECFp.curveSpecs_
  * 
  *        
- *         domainSpec =  UCrypt.ECFp.curveSpec("secp256k1");
+ *         domainSpec =  JSUCrypt.ECFp.curveSpec("secp256k1");
  *         
  * 
- * For building your own domain, use the UCrypt.ECFp.ECFpDomain(curve, G,order,cofactor) constructor.
+ * For building your own domain, use the JSUCrypt.ECFp.ECFpDomain(curve, G,order,cofactor) constructor.
  * 
  * 
  * ## Point on curve
  * 
- * UCrypt.ECFp provide both Affine and Projective point :
+ * JSUCrypt.ECFp provide both Affine and Projective point :
  * 
- *   - UCrypt.ECFp.AffinPoint
- *   - UCrypt.ECFp.ProjectivePoint
+ *   - JSUCrypt.ECFp.AffinPoint
+ *   - JSUCrypt.ECFp.ProjectivePoint
  * 
  * Note: Jacobian point will be added later.
  * 
  * Point are created with point constructor:
- *    - new UCrypt.ECFp.AffinPoint(x,y,curve)      
- *    - new UCrypt.ECFp.ProjectivePoint(x,y,z,curve)      
+ *    - new JSUCrypt.ECFp.AffinPoint(x,y,curve)      
+ *    - new JSUCrypt.ECFp.ProjectivePoint(x,y,z,curve)      
  * 
  * 
  * Both Affine and Projective point provide the following APis:
@@ -84,15 +84,15 @@ limitations under the License.
  *
  * --------------------------------------------------------------------------
  *
- *@namespace UCrypt.ECFp 
+ *@namespace JSUCrypt.ECFp 
  */
 
-UCrypt.ECFp ||  (function (undefined) {
+JSUCrypt.ECFp ||  (function (undefined) {
 
     
 
     /** 
-     * @lends UCrypt.ECFp
+     * @lends JSUCrypt.ECFp
      */
     var ecfp = {};
 
@@ -330,9 +330,9 @@ UCrypt.ECFp ||  (function (undefined) {
      * @class
      */
     ecfp.EcFpCurve = function(a,b,field) {
-            this.a        = UCrypt.utils.anyToBigInteger(a);
-            this.b        = UCrypt.utils.anyToBigInteger(b);
-            this.field    = UCrypt.utils.anyToBigInteger(field);
+            this.a        = JSUCrypt.utils.anyToBigInteger(a);
+            this.b        = JSUCrypt.utils.anyToBigInteger(b);
+            this.field    = JSUCrypt.utils.anyToBigInteger(field);
     };
     
     /**
@@ -349,25 +349,25 @@ UCrypt.ECFp ||  (function (undefined) {
     ecfp.EcFpDomain = function(curve, G,order,cofactor) {
         if ((!(curve instanceof ecfp.EcFpCurve)) ||
             (!(G instanceof ecfp.AffinePoint))) {
-            throw new UCrypt.UCryptException("Invalid paramerter type");
+            throw new JSUCrypt.JSUCryptException("Invalid paramerter type");
         }
         /** {EcFpCurve} curve */
         this.curve    = curve;
         /** {AFfinePoint} curve */
         this.G        = G;
         /** {BigInteger} order */
-        this.order    = UCrypt.utils.anyToBigInteger(order);
+        this.order    = JSUCrypt.utils.anyToBigInteger(order);
         /** {BigInteger} cofactor */
-        this.cofactor = UCrypt.utils.anyToBigInteger(cofactor);    
+        this.cofactor = JSUCrypt.utils.anyToBigInteger(cofactor);    
     };
     
     /***
      * Build the EcFpDomain correpondig to the specification.
-     * @memberof UCrypt.ECFp
+     * @memberof JSUCrypt.ECFp
      */
     ecfp.getEcDomainBySpec = function(spec) {
         if (!spec) {
-            throw new UCrypt.UCryptException("Invalid undefined domain specification");
+            throw new JSUCrypt.JSUCryptException("Invalid undefined domain specification");
         }
         var curve = new ecfp.EcFpCurve( new BigInteger(spec.a,16),
                                         new BigInteger(spec.b,16),
@@ -385,8 +385,8 @@ UCrypt.ECFp ||  (function (undefined) {
      * @function
      * 
      * Build the EcFpDomain correpondig to the given name.
-     * @see  UCrypt.ECFp.EcFpDomain
-     * @memberof UCrypt.ECFp
+     * @see  JSUCrypt.ECFp.EcFpDomain
+     * @memberof JSUCrypt.ECFp
      */
     ecfp.getEcDomainByName = function (name) {        
         return  ecfp.getEcDomainBySpec(ecfp.curveDomainSpecs[name]);
@@ -409,7 +409,7 @@ UCrypt.ECFp ||  (function (undefined) {
     ecfp.AffinePoint = function (x, y, curve) {
         if ((curve != undefined) &&
             !(curve instanceof ecfp.EcFpCurve)) {
-            throw new UCrypt.UCryptException("Invalid paramerter type");
+            throw new JSUCrypt.JSUCryptException("Invalid paramerter type");
         }
         
         /**
@@ -417,12 +417,12 @@ UCrypt.ECFp ||  (function (undefined) {
          * @public
          * @property {BigInteger} x
          */
-        this.x = UCrypt.utils.anyToBigInteger(x);
+        this.x = JSUCrypt.utils.anyToBigInteger(x);
         /**
          * y coordinate.
          * @property {BigInteger} y
          */
-        this.y = UCrypt.utils.anyToBigInteger(y);
+        this.y = JSUCrypt.utils.anyToBigInteger(y);
 
         this._curve = curve;
         
@@ -448,7 +448,7 @@ UCrypt.ECFp ||  (function (undefined) {
          * @param {anyBN} k scalar
          */
         this.multiply = function(k) {
-            k = UCrypt.utils.anyToBigInteger(k);
+            k = JSUCrypt.utils.anyToBigInteger(k);
             var    kproj = this.toProjective();
             kproj = kproj.multiply(k);
             return kproj.toAffine();
@@ -464,7 +464,7 @@ UCrypt.ECFp ||  (function (undefined) {
             var thisProj    = this.toProjective();
             point    = point.toProjective();
             if (!(point instanceof ecfp.ProjectivePoint)) {
-                throw new UCrypt.UCryptException("Invalid paramerter type");
+                throw new JSUCrypt.JSUCryptException("Invalid paramerter type");
             }
             thisProj.add(point);
             return thisProj.toAffine();
@@ -477,13 +477,13 @@ UCrypt.ECFp ||  (function (undefined) {
          */
         this.getUncompressedForm = function() {
             if (this._curve == undefined) {
-                throw new UCrypt.UCryptException("Curve not set");
+                throw new JSUCrypt.JSUCryptException("Curve not set");
             }
-            var l = UCrypt.utils.upper8(this._curve.field.bitLength);
+            var l = JSUCrypt.utils.upper8(this._curve.field.bitLength);
             var compressed = [];
             compressed.append([4]);
-            compressed.append(UCrypt.utils.normalizeByteArrayUL(this.x.toByteArray(), l));
-            compressed.append(UCrypt.utils.normalizeByteArrayUL(this.y.toByteArray(), l));
+            compressed.append(JSUCrypt.utils.normalizeByteArrayUL(this.x.toByteArray(), l));
+            compressed.append(JSUCrypt.utils.normalizeByteArrayUL(this.y.toByteArray(), l));
             return compressed;
         };
         
@@ -506,24 +506,24 @@ UCrypt.ECFp ||  (function (undefined) {
     ecfp.ProjectivePoint = function(x,y,z,curve) {
         if ((curve != undefined) &&
             !(curve instanceof ecfp.EcFpCurve)) {
-            throw new UCrypt.UCryptException("Invalid paramerter type");
+            throw new JSUCrypt.JSUCryptException("Invalid paramerter type");
         }
         
         /**
          * x coordinate.
          * @property {BigInteger} 
          */
-        this.x      = UCrypt.utils.anyToBigInteger(x);
+        this.x      = JSUCrypt.utils.anyToBigInteger(x);
         /**
          * y coordinate.
          * @property {BigInteger} 
          */
-        this.y      = UCrypt.utils.anyToBigInteger(y);
+        this.y      = JSUCrypt.utils.anyToBigInteger(y);
         /**
          * z coordinate.
          * @property {BigInteger} 
          */
-        this.z      = UCrypt.utils.anyToBigInteger(z);
+        this.z      = JSUCrypt.utils.anyToBigInteger(z);
 
         this._curve = curve;
 
@@ -554,7 +554,7 @@ UCrypt.ECFp ||  (function (undefined) {
              */
             point    = point.toProjective();
             if (!(point instanceof ecfp.ProjectivePoint)) {
-                throw new UCrypt.UCryptException("Invalid paramerter type");
+                throw new JSUCrypt.JSUCryptException("Invalid paramerter type");
             }
             var p = this._curve.field;
             
@@ -604,7 +604,7 @@ UCrypt.ECFp ||  (function (undefined) {
          * @param {anyBN} scalar
          */
         this.multiply= function(k) {
-            k = UCrypt.utils.anyToBigInteger(k);
+            k = JSUCrypt.utils.anyToBigInteger(k);
             var R0 = this;
             var R1 = this;
             var nbbit = k.bitLength()-1;
@@ -653,7 +653,7 @@ UCrypt.ECFp ||  (function (undefined) {
 
 
     // --- Set it ---
-    UCrypt.ECFp = ecfp;
+    JSUCrypt.ECFp = ecfp;
 
 
     // --------------------------------------------------------------------------
@@ -668,9 +668,9 @@ UCrypt.ECFp ||  (function (undefined) {
      * @param {AffinePoint} W        public key W
      * @class
      */
-     UCrypt.key.EcFpPublicKey = function (size, domain, point) {
-         if (!(domain instanceof UCrypt.ECFp.EcFpDomain)) {
-             throw new UCrypt.UCryptException("Invalid paramerter type");
+     JSUCrypt.key.EcFpPublicKey = function (size, domain, point) {
+         if (!(domain instanceof JSUCrypt.ECFp.EcFpDomain)) {
+             throw new JSUCrypt.JSUCryptException("Invalid paramerter type");
          }
 
          /**
@@ -689,7 +689,7 @@ UCrypt.ECFp ||  (function (undefined) {
               * Public key value 
               * @property {AffinePoint} public point
               */
-             this.W        = new UCrypt.ECFp.AffinePoint(point.x, point.y, domain.curve);
+             this.W        = new JSUCrypt.ECFp.AffinePoint(point.x, point.y, domain.curve);
         }
      };
     
@@ -701,9 +701,9 @@ UCrypt.ECFp ||  (function (undefined) {
      * @param {anyBN}       scalar   private key scalar
      * @class
      */
-     UCrypt.key.EcFpPrivateKey = function(size,domain, scalar) {
-        if (!(domain instanceof UCrypt.ECFp.EcFpDomain)) {
-            throw new UCrypt.UCryptException("Invalid paramerter type");
+     JSUCrypt.key.EcFpPrivateKey = function(size,domain, scalar) {
+        if (!(domain instanceof JSUCrypt.ECFp.EcFpDomain)) {
+            throw new JSUCrypt.JSUCryptException("Invalid paramerter type");
         }
         /**
           * key size in bits
@@ -721,7 +721,7 @@ UCrypt.ECFp ||  (function (undefined) {
               * Private key value 
               * @property {number} private scalar
               */
-             this.d      = UCrypt.utils.anyToBigInteger(scalar);
+             this.d      = JSUCrypt.utils.anyToBigInteger(scalar);
          }
     };
 
@@ -730,22 +730,22 @@ UCrypt.ECFp ||  (function (undefined) {
      * @params {number}     size     key size in bits
      * @param {EcFpDomain}  domain   curve Domain
      */
-     UCrypt.key.generateECFpPair = function(size, domain) {        
+     JSUCrypt.key.generateECFpPair = function(size, domain) {        
         size = size/8;
         //gen priv scalar
         var scal = [];
         for (var i = 0; i<size; i++) {
             scal[i] = (Math.floor(Math.random()*255));
         }
-        scal = UCrypt.utils.anyToBigInteger(scal);
+        scal = JSUCrypt.utils.anyToBigInteger(scal);
         scal = scal.mod(domain.order);
 
         //gen public point
         var W = domain.G.multiply(scal);
 
         //build and give pair 
-        return [new UCrypt.key.EcFpPublicKey(size, domain, W),
-                new UCrypt.key.EcFpPrivateKey(size, domain, scal)];
+        return [new JSUCrypt.key.EcFpPublicKey(size, domain, W),
+                new JSUCrypt.key.EcFpPrivateKey(size, domain, scal)];
     };
 
 

@@ -16,7 +16,7 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
@@ -31,37 +31,37 @@ limitations under the License.
  * 
  * #### Example:
  *        //secp256k1
- *       ecdhdomain =  UCrypt.ECFp.getEcDomainByName("secp256k1");
- *       ecdhprivkey = new UCrypt.key.EcFpPrivateKey(
+ *       ecdhdomain =  JSUCrypt.ECFp.getEcDomainByName("secp256k1");
+ *       ecdhprivkey = new JSUCrypt.key.EcFpPrivateKey(
  *           256, ecdhdomain, 
  *           "fb26a4e75eec75544c0f44e937dcf5ee6355c7176600b9688c667e5c283b43c5"
  *       );**
  *
- *       ecdhpubkey = new UCrypt.key.EcFpPublicKey(
+ *       ecdhpubkey = new JSUCrypt.key.EcFpPublicKey(
  *           256, ecdhdomain, 
- *           new UCrypt.ECFp.AffinePoint("65d5b8bf9ab1801c9f168d4815994ad35f1dcb6ae6c7a1a303966b677b813b00",
+ *           new JSUCrypt.ECFp.AffinePoint("65d5b8bf9ab1801c9f168d4815994ad35f1dcb6ae6c7a1a303966b677b813b00",
  *                                       "e6b865e529b8ecbf71cf966e900477d49ced5846d7662dd2dd11ccd55c0aff7f")
  *       );
  *
  *       //other party public point....
- *       otherpoint = new UCrypt.ECFp.AffinePoint("edc8530038d1186b9054acb75aef1419e78ae29b7ee86d42d2dc675504367421",
+ *       otherpoint = new JSUCrypt.ECFp.AffinePoint("edc8530038d1186b9054acb75aef1419e78ae29b7ee86d42d2dc675504367421",
  *                                                "70b4c38a9eb95587f88c3ca33ae760cc0118dcc453d25c1653a54d920f1debe5",
  *                                                ecdhdomain.curve);
  *       //generate secret
- *       var ecdh = new UCrypt.keyagreement.ECDH_SVDP(ecdhprivkey);
+ *       var ecdh = new JSUCrypt.keyagreement.ECDH_SVDP(ecdhprivkey);
  *       var secret = ecdh.generate(otherpoint);
  *
  */
-UCrypt.keyagreement.ECDH_SVDP  ||  (function (undefined) {
+JSUCrypt.keyagreement.ECDH_SVDP  ||  (function (undefined) {
 
     /**
      * @param {anyBN}           private ECDH key
      * @class
-     * @lends  UCrypt.keyagreement.ECDH_SVDP
+     * @lends  JSUCrypt.keyagreement.ECDH_SVDP
      */
-    UCrypt.keyagreement.ECDH_SVDP = function (key) {
-        if (!(key instanceof UCrypt.key.EcFpPrivateKey)){ 
-            throw new UCrypt.UCryptException("Invalid parameter type");
+    JSUCrypt.keyagreement.ECDH_SVDP = function (key) {
+        if (!(key instanceof JSUCrypt.key.EcFpPrivateKey)){ 
+            throw new JSUCrypt.JSUCryptException("Invalid parameter type");
         }
         this.key = key;
     };
@@ -74,14 +74,14 @@ UCrypt.keyagreement.ECDH_SVDP  ||  (function (undefined) {
      *
      * @return {BigInteger}     shared secret (x ccordinate of computer point)
      */
-    UCrypt.keyagreement.ECDH_SVDP.prototype.generate = function(otherPoint) {
-        if (!(otherPoint instanceof UCrypt.ECFp.AffinePoint) &&
-            !(otherPoint instanceof UCrypt.ECFp.ProjectivePoint)) {
-            throw new UCrypt.UCryptException("Invalid parameter type");
+    JSUCrypt.keyagreement.ECDH_SVDP.prototype.generate = function(otherPoint) {
+        if (!(otherPoint instanceof JSUCrypt.ECFp.AffinePoint) &&
+            !(otherPoint instanceof JSUCrypt.ECFp.ProjectivePoint)) {
+            throw new JSUCrypt.JSUCryptException("Invalid parameter type");
         }
         
         var point = otherPoint.multiply(this.key.d);
-        return UCrypt.utils.normalizeByteArrayUL(point.x.toByteArray(),this.key.size/8) ;
+        return JSUCrypt.utils.normalizeByteArrayUL(point.x.toByteArray(),this.key.size/8) ;
     };
     
 }());

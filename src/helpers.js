@@ -16,19 +16,19 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
 
 
-/** @namespace UCrypt.utils */
-UCrypt.utils ||  (function (undefined) {
+/** @namespace JSUCrypt.utils */
+JSUCrypt.utils ||  (function (undefined) {
 
     /** 
-     * @lends UCrypt.utils
+     * @lends JSUCrypt.utils
      */
-    UCrypt.utils = {};
+    JSUCrypt.utils = {};
 
     /** 
      * Convert a string to byte array. 
@@ -37,7 +37,7 @@ UCrypt.utils ||  (function (undefined) {
      *
      * @param {string} str 
      */
-    UCrypt.utils.strToByteArray = function(str) {
+    JSUCrypt.utils.strToByteArray = function(str) {
         var b=[];
         var len = str.length;
         for (var i=0; i<len; i++) {
@@ -53,7 +53,7 @@ UCrypt.utils ||  (function (undefined) {
      *
      * @param {string} hex string
      */
-   UCrypt.utils.hexStrToByteArray = function(str) {
+   JSUCrypt.utils.hexStrToByteArray = function(str) {
         if (str.length & 1 ) {
             str = "0"+str;
         }
@@ -72,7 +72,7 @@ UCrypt.utils ||  (function (undefined) {
      *
      * @param {byte[]} arr
      */
-    UCrypt.utils.byteArrayToHexStr = function(arr) {
+    JSUCrypt.utils.byteArrayToHexStr = function(arr) {
         var len = arr.length;
         var str = "";
         for (var i = 0; i<len; i++) {
@@ -91,7 +91,7 @@ UCrypt.utils ||  (function (undefined) {
      *
      * @param {byte[]|hexstring|number} arr
      */
-    UCrypt.utils.anyToBigInteger = function(any) {
+    JSUCrypt.utils.anyToBigInteger = function(any) {
         if (any instanceof BigInteger) {
             return any;
         }
@@ -99,12 +99,12 @@ UCrypt.utils ||  (function (undefined) {
             return new BigInteger(any,16);
         }
         if (any instanceof Array) {
-            return new BigInteger(UCrypt.utils.byteArrayToHexStr(any),16);
+            return new BigInteger(JSUCrypt.utils.byteArrayToHexStr(any),16);
         }
         if (typeof any=="number") {
             return new BigInteger(any.toStringf(16));
         }
-        throw new UCrypt.UCryptException("Invalid parameter type:"+any);
+        throw new JSUCrypt.JSUCryptException("Invalid parameter type:"+any);
     };
 
     /** 
@@ -112,13 +112,13 @@ UCrypt.utils ||  (function (undefined) {
      *
      * @param {byte[]|hexstring|number} arr
      */
-    UCrypt.utils.anyToByteArray = function(any) {    
+    JSUCrypt.utils.anyToByteArray = function(any) {    
         
         if (any == undefined) {
             return [];
         }
         if (typeof any =="string") {
-            return UCrypt.utils.hexStrToByteArray(any);
+            return JSUCrypt.utils.hexStrToByteArray(any);
         }
         if (any instanceof Array) {
             return any;
@@ -126,7 +126,7 @@ UCrypt.utils ||  (function (undefined) {
         if (typeof any=="number") {
             return [any&0xFF];
         }
-        throw new UCrypt.UCryptException("Invalid paramerter type:"+any);
+        throw new JSUCrypt.JSUCryptException("Invalid paramerter type:"+any);
     };
 
     /** 
@@ -136,7 +136,7 @@ UCrypt.utils ||  (function (undefined) {
      * @param {byte[]} input byte array
      * @param {number} expected length
      */
-    UCrypt.utils.normalizeByteArrayUL = function(ba,len) {
+    JSUCrypt.utils.normalizeByteArrayUL = function(ba,len) {
         if (len == undefined) {
             len = ba.length;
         }
@@ -159,7 +159,7 @@ UCrypt.utils ||  (function (undefined) {
     /**
      * @private
      */
-    UCrypt.utils.upper8 = function (x) {
+    JSUCrypt.utils.upper8 = function (x) {
         return (x+7)& (~7); 
     };
 

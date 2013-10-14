@@ -16,17 +16,17 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
 
-UCrypt.hash.SHA256 || (function(undefined) {
+JSUCrypt.hash.SHA256 || (function(undefined) {
 
     // --- SHA256 ---
     /** 
      * An SHA256 hasher
-     * @lends  UCrypt.hash.SHA256
+     * @lends  JSUCrypt.hash.SHA256
      * @class 
      */
     var SHA256 = function() {
@@ -34,20 +34,20 @@ UCrypt.hash.SHA256 || (function(undefined) {
     };
     
     /**
-     * @see UCrypt.hash#reset
+     * @see JSUCrypt.hash#reset
      * @function
      */
-    SHA256.prototype.reset       = UCrypt.hash._reset;
+    SHA256.prototype.reset       = JSUCrypt.hash._reset;
     /**
-     * @see UCrypt.hash#update
+     * @see JSUCrypt.hash#update
      * @function
      */
-     SHA256.prototype.update      = UCrypt.hash._update;
+     SHA256.prototype.update      = JSUCrypt.hash._update;
     /**
-     * @see UCrypt.hash#finalize
+     * @see JSUCrypt.hash#finalize
      * @function
      */
-    SHA256.prototype.finalize    = UCrypt.hash._finalize;
+    SHA256.prototype.finalize    = JSUCrypt.hash._finalize;
 
     SHA256.prototype.PKCS1_OID     = [0x30, 0x31, 0x30, 0x0d, 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01, 0x05, 0x00, 0x04, 0x20];
     SHA256.prototype._BE         = true;
@@ -60,24 +60,24 @@ UCrypt.hash.SHA256 || (function(undefined) {
 
    /** 
      * An SHA224 hasher
-     * @lends  UCrypt.hash.SHA224
+     * @lends  JSUCrypt.hash.SHA224
      * @class 
      */
     var SHA224 = function() {
         this.reset();
     };
    /**
-     * @see UCrypt.hash#reset
+     * @see JSUCrypt.hash#reset
      * @function
      */
-    SHA224.prototype.reset        = UCrypt.hash._reset;
+    SHA224.prototype.reset        = JSUCrypt.hash._reset;
     /**
-     * @see UCrypt.hash#update
+     * @see JSUCrypt.hash#update
      * @function
      */
-    SHA224.prototype.update       = UCrypt.hash._update;
+    SHA224.prototype.update       = JSUCrypt.hash._update;
     /**
-     * @see UCrypt.hash#finalize
+     * @see JSUCrypt.hash#finalize
      * @function
      */
     SHA224.prototype.finalize     = function(block) {
@@ -88,7 +88,7 @@ UCrypt.hash.SHA256 || (function(undefined) {
     SHA224.prototype._BE          = true;
     SHA224.prototype._nWords      = 8;
     SHA224.prototype._IV          = [0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939, 0xffc00b31, 0x68581511, 0x64f98fa7, 0xbefa4fa4];
-    SHA224.prototype._finalize256 = UCrypt.hash._finalize;
+    SHA224.prototype._finalize256 = JSUCrypt.hash._finalize;
     SHA224.prototype._process     = _doProcess;
 
 
@@ -170,7 +170,7 @@ UCrypt.hash.SHA256 || (function(undefined) {
     }
 
     // --- Set it ---
-    UCrypt.hash.SHA256 = SHA256;
-    UCrypt.hash.SHA224 = SHA224;
+    JSUCrypt.hash.SHA256 = SHA256;
+    JSUCrypt.hash.SHA224 = SHA224;
 }());
    

@@ -16,7 +16,7 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
@@ -38,8 +38,8 @@ limitations under the License.
  * 
  * _mode_ is one of :
  * 
- *    - UCrypt.cipher.MODE_ENCRYPT
- *    - UCrypt.cipher.MODE_DECRYPT
+ *    - JSUCrypt.cipher.MODE_ENCRYPT
+ *    - JSUCrypt.cipher.MODE_DECRYPT
  * 
  * Cipher are automatically re-initialized on power up and on final call 
  * with last used key and default empty parameters.
@@ -49,13 +49,13 @@ limitations under the License.
  *
  * To create en XXX cipher:
  * 
- *  - new UCrypt.cipher.XXX(padder, [chainMode])
+ *  - new JSUCrypt.cipher.XXX(padder, [chainMode])
  * 
  * _chainMode_ is one of :
  * 
- *    - UCrypt.cipher.MODE_ECB
- *    - UCrypt.cipher.MODE_CBC
- *    - UCrypt.cipher.MODE_CFB
+ *    - JSUCrypt.cipher.MODE_ECB
+ *    - JSUCrypt.cipher.MODE_CBC
+ *    - JSUCrypt.cipher.MODE_CFB
  * 
  * Supported XXX cipher are:
  *  
@@ -67,29 +67,29 @@ limitations under the License.
  * 
  *         
  *         //create cipher
- *         cipher = new UCrypt.cipher.DES(UCrypt.padder.None, UCrypt.cipher.MODE_CBC);
+ *         cipher = new JSUCrypt.cipher.DES(JSUCrypt.padder.None, JSUCrypt.cipher.MODE_CBC);
  * 
  *         //init cipher without IV, aka IV = [0,0,0,0,0,0,0,0]
- *         cipher.init("466431296486ed9c", UCrypt.cipher.MODE_ENCRYPT);
+ *         cipher.init("466431296486ed9c", JSUCrypt.cipher.MODE_ENCRYPT);
  *         ct = cipher.update("506b4e5b8c8fa4db1b95d3e8c5");
  *         ct = ct.concat(cipher.finalize([0xc5, 0xfb, 0x5a]));
  *         
  * 
  * ------------------------------------------------------------------------------------
  * 
- * @namespace UCrypt.cipher 
+ * @namespace JSUCrypt.cipher 
 */
-UCrypt.cipher || (function (undefined) {
+JSUCrypt.cipher || (function (undefined) {
 
     /**
-     * @lends  UCrypt.cipher 
+     * @lends  JSUCrypt.cipher 
      */
     var ciph = {
-        /** @class UCrypt.cipher.DES */
+        /** @class JSUCrypt.cipher.DES */
         DES: undefined,
-        /** @class UCrypt.cipher.AES */
+        /** @class JSUCrypt.cipher.AES */
         AES: undefined,
-        /** @class UCrypt.cipher.RSA */
+        /** @class JSUCrypt.cipher.RSA */
         RSA: undefined,
     };
 
@@ -128,25 +128,25 @@ UCrypt.cipher || (function (undefined) {
 
     /** 
      * Init the cipher
-     * @name UCrypt.cipher#init
+     * @name JSUCrypt.cipher#init
      * @function
-     * @memberof  UCrypt.cipher
+     * @memberof  JSUCrypt.cipher
      * @abstract
      * @param {key}    key    the key
      * @param {number} mode   MODE_ENCRYPT or .MODE_DECRYPT 
      */       
     /** 
      * Reset the cipher
-     * @name UCrypt.cipher#reset
+     * @name JSUCrypt.cipher#reset
      * @function
-     * @memberof  UCrypt.cipher
+     * @memberof  JSUCrypt.cipher
      * @abstract
      */    
     /** 
      * Push more data into the cipher
-     * @name UCrypt.cipher#update
+     * @name JSUCrypt.cipher#update
      * @function
-     * @memberof  UCrypt.cipher
+     * @memberof  JSUCrypt.cipher
      * @abstract
      * @param  {anyBA}  data chunk to decrypt/encrypt
      * @return {byte[]}      decrypted/encrypted chunk 
@@ -156,9 +156,9 @@ UCrypt.cipher || (function (undefined) {
      *
      * After finialization the cipher is automaticcaly reset and ready to encrypt/decrypt.
      *
-     * @name UCrypt.cipher#finalize
+     * @name JSUCrypt.cipher#finalize
      * @function
-     * @memberof  UCrypt.cipher
+     * @memberof  JSUCrypt.cipher
      * @abstract
      * @param  {anyBA}   data   chunk to encrypt before finalization
      * @return {byte[]}         decrypted/encrypted chunk 
@@ -169,19 +169,19 @@ UCrypt.cipher || (function (undefined) {
         this._remaining = [];
     };
     ciph._asymUpdate = function(data) {
-        data = UCrypt.utils.anyToByteArray(data);
+        data = JSUCrypt.utils.anyToByteArray(data);
         this._remaining = this._remaining.concat(data);
         return [];
     };
     ciph._asymFinalize = function(data) {
         var x;
-        data = UCrypt.utils.anyToByteArray(data);
+        data = JSUCrypt.utils.anyToByteArray(data);
         this._remaining.append(data);
 
-        if (this._enc_mode == UCrypt.cipher.MODE_ENCRYPT) {
+        if (this._enc_mode == JSUCrypt.cipher.MODE_ENCRYPT) {
             x = this._doCrypt(this._remaining);
         }
-        if (this._enc_mode == UCrypt.cipher.MODE_DECRYPT) {
+        if (this._enc_mode == JSUCrypt.cipher.MODE_DECRYPT) {
             x = this._doDecrypt(this._remaining);
         }
         this.reset();
@@ -208,20 +208,20 @@ UCrypt.cipher || (function (undefined) {
         var encBlk, decBlk;
         var i;
         try {
-            data = UCrypt.utils.anyToByteArray(data);
+            data = JSUCrypt.utils.anyToByteArray(data);
             data = this._remaining.concat(data);
             this._remaining = [];
             
             switch(this._enc_mode) {
                 // --- ENC ---
-            case UCrypt.cipher.MODE_ENCRYPT:
+            case JSUCrypt.cipher.MODE_ENCRYPT:
                 if (last) {
                     data = this._padder.pad(data, this._blockSize);
                 }
                 
                 switch(this._chain_mode) {
                     //ECB
-                case  UCrypt.cipher.MODE_ECB:
+                case  JSUCrypt.cipher.MODE_ECB:
                     while (data.length >= this._blockSize) {
                         //crypt
                         encBlk = this._doEncryptBlock(data);
@@ -230,7 +230,7 @@ UCrypt.cipher || (function (undefined) {
                     }
                     break;                
                     //CBC
-                case  UCrypt.cipher.MODE_CBC:
+                case  JSUCrypt.cipher.MODE_CBC:
                     while (data.length >= this._blockSize) {
                         //xor
                         for (i = 0; i<8; i++) {
@@ -243,7 +243,7 @@ UCrypt.cipher || (function (undefined) {
                     }
                     break;
                     //CFB
-                case UCrypt.cipher.MODE_CFB:
+                case JSUCrypt.cipher.MODE_CFB:
                     while (data.length >= this._blockSize) {
                         //crypt
                         this._block = this._doEncryptBlock(this._block);
@@ -259,15 +259,15 @@ UCrypt.cipher || (function (undefined) {
                     break;
                     //WAT
                 default:
-                    throw new UCrypt.UCryptException("Invalid 'chain mode' parameter");
+                    throw new JSUCrypt.JSUCryptException("Invalid 'chain mode' parameter");
                 }
                 break;
                 
                 // --- DEC ---
-            case UCrypt.cipher.MODE_DECRYPT:
+            case JSUCrypt.cipher.MODE_DECRYPT:
                 switch(this._chain_mode) {
                     //ECB
-                case  UCrypt.cipher.MODE_ECB:
+                case  JSUCrypt.cipher.MODE_ECB:
                     while (data.length >= this._blockSize) {
                         //decrypt
                         x.append(this._doDecryptBlock(data));
@@ -275,7 +275,7 @@ UCrypt.cipher || (function (undefined) {
                     }
                     break;
                     //CBC
-                case  UCrypt.cipher.MODE_CBC:
+                case  JSUCrypt.cipher.MODE_CBC:
                     while (data.length >= this._blockSize) {
                         //decrypt
                         decBlk = this._doDecryptBlock(data);
@@ -291,7 +291,7 @@ UCrypt.cipher || (function (undefined) {
                     }                
                     break;
                     //CFB
-                case UCrypt.cipher.MODE_CFB:
+                case JSUCrypt.cipher.MODE_CFB:
                     while (data.length >= this._blockSize) {
                         //decrypt
                         decBlk = this._doDecryptBlock(this._block);
@@ -308,7 +308,7 @@ UCrypt.cipher || (function (undefined) {
                     break;
                     //WAT
                 default:
-                    throw new UCrypt.UCryptException("Invalid 'chain mode' parameter");                
+                    throw new JSUCrypt.JSUCryptException("Invalid 'chain mode' parameter");                
                 }
                 if (last) {
                     x = this._padder.unpad(x, this._blockSize);
@@ -317,7 +317,7 @@ UCrypt.cipher || (function (undefined) {
                 
                 //WAT
             default:
-                throw new UCrypt.UCryptException("Invalid 'crypt mode' parameter");            
+                throw new JSUCrypt.JSUCryptException("Invalid 'crypt mode' parameter");            
             }
             
             this._remaining = data;
@@ -332,7 +332,7 @@ UCrypt.cipher || (function (undefined) {
         }
     }
 
-    UCrypt.cipher = ciph;
+    JSUCrypt.cipher = ciph;
 }());
 
 

@@ -16,19 +16,19 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
 
 
-/** @namespace UCrypt.keyagreement */
-UCrypt.keyagreement ||  (function (undefined) {
+/** @namespace JSUCrypt.keyagreement */
+JSUCrypt.keyagreement ||  (function (undefined) {
 
     /**
-     * @lends  UCrypt.keyagreement
+     * @lends  JSUCrypt.keyagreement
      */
     var ka = {     
     };
-    UCrypt.keyagreement = ka;
+    JSUCrypt.keyagreement = ka;
 }());

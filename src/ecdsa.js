@@ -16,7 +16,7 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
@@ -27,14 +27,14 @@ limitations under the License.
 //                                   ECDSA
 // --------------------------------------------------------------------------
 
-UCrypt.signature.ECDSA  ||  (function (undefined) {
+JSUCrypt.signature.ECDSA  ||  (function (undefined) {
     /** 
      * An ECDSA Signature
-     * @lends  UCrypt.signature.ECDSA
+     * @lends  JSUCrypt.signature.ECDSA
      * @class 
-     * @parameter {UCrypt.padder} padder       a padder
-     * @see UCrypt.cipher
-     * @see UCrypt.padder
+     * @parameter {JSUCrypt.padder} padder       a padder
+     * @see JSUCrypt.cipher
+     * @see JSUCrypt.padder
      */
     var ecdsa = function(hash) {        
         this._hash = hash; 
@@ -42,49 +42,49 @@ UCrypt.signature.ECDSA  ||  (function (undefined) {
     };
 
     /**
-     * @see UCrypt.signature#init
+     * @see JSUCrypt.signature#init
      */    
     ecdsa.prototype.init = function(key, mode) {
-        if (mode == UCrypt.signature.MODE_SIGN) {
-            if ( ! key instanceof UCrypt.key.EcFpPrivateKey) {
-                throw new UCrypt.UCryptException("Invalid 'key' parameter");
+        if (mode == JSUCrypt.signature.MODE_SIGN) {
+            if ( ! key instanceof JSUCrypt.key.EcFpPrivateKey) {
+                throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
             }
-        } else if (mode == UCrypt.signature.MODE_VERIFY) {
-            if ( ! key instanceof UCrypt.key.EcFpPublicKey) {
-                throw new UCrypt.UCryptException("Invalid 'key' parameter");
+        } else if (mode == JSUCrypt.signature.MODE_VERIFY) {
+            if ( ! key instanceof JSUCrypt.key.EcFpPublicKey) {
+                throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
             }
         } else {
-            throw new UCrypt.UCryptException("Invalid 'mode' parameter");
+            throw new JSUCrypt.JSUCryptException("Invalid 'mode' parameter");
         }
         this._key = key;
         this._mode = mode;
         this.reset();
     };
     /**
-     * @see UCrypt.signature#reset
+     * @see JSUCrypt.signature#reset
      * @function
      */
-    ecdsa.prototype.reset     = UCrypt.signature._asymReset;
+    ecdsa.prototype.reset     = JSUCrypt.signature._asymReset;
     /**
-     * @see UCrypt.signature#update
+     * @see JSUCrypt.signature#update
      * @function
      */
-    ecdsa.prototype.update    = UCrypt.signature._asymUpdate;
+    ecdsa.prototype.update    = JSUCrypt.signature._asymUpdate;
     /**
-     * @see UCrypt.signature#sign
+     * @see JSUCrypt.signature#sign
      * @function
      */
-    ecdsa.prototype.sign      = UCrypt.signature._asymSign;
+    ecdsa.prototype.sign      = JSUCrypt.signature._asymSign;
     /**
-     * @see UCrypt.signature#version
+     * @see JSUCrypt.signature#version
      * @function
      */
-    ecdsa.prototype.verify    = UCrypt.signature._asymVerify;
+    ecdsa.prototype.verify    = JSUCrypt.signature._asymVerify;
 
     ecdsa.prototype._doSign = function (h) {  
         var order = this._key.domain.order;        
 
-        h = new BigInteger(UCrypt.utils.byteArrayToHexStr(h),16);
+        h = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(h),16);
 
         for(;;) {
             //peek random
@@ -94,7 +94,7 @@ UCrypt.signature.ECDSA  ||  (function (undefined) {
                 //k.push(Math.floor(Math.random()*255));
                 k.push(42);
             }
-            k = UCrypt.utils.byteArrayToHexStr(k);
+            k = JSUCrypt.utils.byteArrayToHexStr(k);
             k = new BigInteger(k,16);
             k = k.mod(order);
             
@@ -125,18 +125,18 @@ UCrypt.signature.ECDSA  ||  (function (undefined) {
     };
 
     ecdsa.prototype._doVerify = function(h, sig) {
-        sig = UCrypt.utils.anyToByteArray(sig);
+        sig = JSUCrypt.utils.anyToByteArray(sig);
         var order = this._key.domain.order;
 
         //finalize hash        
-        h = new BigInteger(UCrypt.utils.byteArrayToHexStr(h),16);
+        h = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(h),16);
 
         //extract r/s
         var r = sig.slice(4,4+sig[3]);
         var s = sig.slice(4+sig[3]+2);
 
-        s = new BigInteger(UCrypt.utils.byteArrayToHexStr(s),16);
-        r = new BigInteger(UCrypt.utils.byteArrayToHexStr(r),16);
+        s = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(s),16);
+        r = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(r),16);
 
         //check format
         var offset =  4+ (sig[3]&0xFF);
@@ -166,5 +166,5 @@ UCrypt.signature.ECDSA  ||  (function (undefined) {
     };
 
     // --- Set it ---
-    UCrypt.signature.ECDSA = ecdsa;
+    JSUCrypt.signature.ECDSA = ecdsa;
 }());

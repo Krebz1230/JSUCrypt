@@ -16,7 +16,7 @@ limitations under the License.
 *************************************************************************
 */
 /**
- * @project UCrypt
+ * @project JSUCrypt
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
@@ -36,8 +36,8 @@ limitations under the License.
  * 
  * _mode_ is one of :
  * 
- *  - UCrypt.cipher.MODE_SIGN
- *  - UCrypt.cipher.MODE_VERIFY
+ *  - JSUCrypt.cipher.MODE_SIGN
+ *  - JSUCrypt.cipher.MODE_VERIFY
  * 
  * _sign_, return the signature.
  * 
@@ -55,12 +55,12 @@ limitations under the License.
  * 
  * to create en DES/AES cipher:
  * 
- *  - new UCrypt.signature.[DES|AES](padder, chainMode)
+ *  - new JSUCrypt.signature.[DES|AES](padder, chainMode)
  * 
  * _chainMode_ is one of :
  * 
- *    - UCrypt.cipher.MODE_CBC
- *    - UCrypt.cipher.MODE_CFB
+ *    - JSUCrypt.cipher.MODE_CBC
+ *    - JSUCrypt.cipher.MODE_CFB
  * 
  * _padder_ is the padder to use. See above.
  * 
@@ -68,7 +68,7 @@ limitations under the License.
  * 
  * to create en ECDSA/RSA signature:
  * 
- *    - new UCrypt.signature.XXX(hasher)
+ *    - new JSUCrypt.signature.XXX(hasher)
  * 
  * _hasher_ is a hasher object. 
  * 
@@ -76,48 +76,48 @@ limitations under the License.
  * #### Example
  *         
  *         //create SHA1 hasher
- *         var sha  = new  UCrypt.hash.SHA1();
+ *         var sha  = new  JSUCrypt.hash.SHA1();
  *         
  *         //create ECFp keys
  *         var pubkey,privkey,domain,ver;
- *         domain =  UCrypt.ECFp.getEcDomainByName("secp256k1");
- *         privkey = new UCrypt.key.EcFpPrivateKey(
+ *         domain =  JSUCrypt.ECFp.getEcDomainByName("secp256k1");
+ *         privkey = new JSUCrypt.key.EcFpPrivateKey(
  *             256, domain, 
  *             "f028458b39af92fea938486ecc49562d0e7731b53d9b25e2701183e4f2adc991");
  *         
- *         pubkey = new UCrypt.key.EcFpPublicKey(
+ *         pubkey = new JSUCrypt.key.EcFpPublicKey(
  *             256, domain, 
- *             new UCrypt.ECFp.AffinePoint("81bc1f9486564d3d57a305e8f9067df2a7e1f007d4af4fed085aca139c6b9c7a",
+ *             new JSUCrypt.ECFp.AffinePoint("81bc1f9486564d3d57a305e8f9067df2a7e1f007d4af4fed085aca139c6b9c7a",
  *                                         "8e3f35e4d7fb27a56a3f35d34c8c2b27cd1d266d5294df131bf3c1cbc39f5a91" ));
  *         
  *         //create signer
- *         var ecsig = new UCrypt.signature.ECDSA(sha);
+ *         var ecsig = new JSUCrypt.signature.ECDSA(sha);
  *         
  *         //sign abc string
- *         ecsig.init(privkey,  UCrypt.signature.MODE_SIGN);
+ *         ecsig.init(privkey,  JSUCrypt.signature.MODE_SIGN);
  *         sig = ecsig.sign("616263");
  *         
  *         //verify
- *         ecsig.init(pubkey,  UCrypt.signature.MODE_VERIFY);
+ *         ecsig.init(pubkey,  JSUCrypt.signature.MODE_VERIFY);
  *         ver = ecsig.verify("616263", sig);
  *         
  * 
  * ------------------------------------------------------------------------------------
  *
- * @namespace UCrypt.signature 
+ * @namespace JSUCrypt.signature 
  **/
-UCrypt.signature || (function (undefined) {
+JSUCrypt.signature || (function (undefined) {
     /**
-     * @lends  UCrypt.signature 
+     * @lends  JSUCrypt.signature 
      */
     var sig = {
-         /** @class UCrypt.signature.DES */
+         /** @class JSUCrypt.signature.DES */
         DES: undefined,
-        /** @class UCrypt.signature.AES */
+        /** @class JSUCrypt.signature.AES */
         AES: undefined,
-        /** @class UCrypt.signature.RSA */
+        /** @class JSUCrypt.signature.RSA */
         RSA: undefined,
-        /** @class UCrypt.signature.ECDSA */
+        /** @class JSUCrypt.signature.ECDSA */
         ECDSA: undefined,
     };
 
@@ -146,9 +146,9 @@ UCrypt.signature || (function (undefined) {
 
     /** 
      * Init the signature
-     * @name UCrypt.signature#init
+     * @name JSUCrypt.signature#init
      * @function
-     * @memberof  UCrypt.signature
+     * @memberof  JSUCrypt.signature
      * @abstract
      * @param {key}    key          the key
      * @param {number} mode         MODE_SIGN or MODE_VERIFY 
@@ -156,16 +156,16 @@ UCrypt.signature || (function (undefined) {
      */       
     /** 
      * Reset the signature
-     * @name UCrypt.signature#reset
+     * @name JSUCrypt.signature#reset
      * @function
-     * @memberof  UCrypt.signature
+     * @memberof  JSUCrypt.signature
      * @abstract
      */
     /** 
      * Push more data into the signature
-     * @name UCrypt.signature#update
+     * @name JSUCrypt.signature#update
      * @function
-     * @memberof  UCrypt.signature
+     * @memberof  JSUCrypt.signature
      * @abstract
      * @param {anyBA} data chunk to decrypt/encrypt
      */
@@ -174,9 +174,9 @@ UCrypt.signature || (function (undefined) {
      *
      * After finialization the signature is automaticcaly reset and ready to sign/verify.
      *
-     * @name UCrypt.signature#sign
+     * @name JSUCrypt.signature#sign
      * @function
-     * @memberof  UCrypt.signature
+     * @memberof  JSUCrypt.signature
      * @abstract
      * @param  {anyBA}  data  chunk to encrypt before finalization
      * @return {byte[]}       the signature
@@ -186,9 +186,9 @@ UCrypt.signature || (function (undefined) {
      *
      * After finialization the signature is automaticcaly reset and ready to encrypt/decrypt.
      *
-     * @name UCrypt.signature#verify
+     * @name JSUCrypt.signature#verify
      * @function
-     * @memberof  UCrypt.signature
+     * @memberof  JSUCrypt.signature
      * @abstract
      * @param  {anyBA} data   chunk to encrypt before finalization
      * @param  {anyBA} sig    signature to check
@@ -204,7 +204,7 @@ UCrypt.signature || (function (undefined) {
 
     sig._asymUpdate = function(data) {
         try {
-            data = UCrypt.utils.anyToByteArray(data);
+            data = JSUCrypt.utils.anyToByteArray(data);
             this._hash.update(data);        
         } catch(e) {
             this.reset();
@@ -214,7 +214,7 @@ UCrypt.signature || (function (undefined) {
 
     sig._asymSign = function(data) {
         try {
-            data = UCrypt.utils.anyToByteArray(data);
+            data = JSUCrypt.utils.anyToByteArray(data);
             var h = this._hash.finalize(data);
             var s = this._doSign(h);
             this.reset();
@@ -227,7 +227,7 @@ UCrypt.signature || (function (undefined) {
 
     sig._asymVerify = function(data, sig) {
        try {
-           data = UCrypt.utils.anyToByteArray(data);
+           data = JSUCrypt.utils.anyToByteArray(data);
            var h = this._hash.finalize(data);
            var v = this._doVerify(h,sig);
            this.reset();
@@ -251,12 +251,12 @@ UCrypt.signature || (function (undefined) {
     sig._symUpdate = function(data) {
         try {
             var i;
-            data = UCrypt.utils.anyToByteArray(data);
+            data = JSUCrypt.utils.anyToByteArray(data);
             data = this._remaining.concat(data);
             this._remaining = [];
             switch(this._chain_mode) {
                 //CBC
-            case  UCrypt.signature.MODE_CBC:
+            case  JSUCrypt.signature.MODE_CBC:
                 while (data.length >= this._blockSize) {
                     //xor
                     for (i = 0; i<8; i++) {
@@ -269,7 +269,7 @@ UCrypt.signature || (function (undefined) {
                 break;
                 
                 //CFB
-            case UCrypt.signature.MODE_CFB:
+            case JSUCrypt.signature.MODE_CFB:
                 while (data.length >= this._blockSize) {
                     //crypt
                     this._block = this._doEncryptBlock(this._block);
@@ -283,7 +283,7 @@ UCrypt.signature || (function (undefined) {
                 
                 //WAT
             default:
-                throw new UCrypt.UCryptException("Invalid 'chain mode' parameter");
+                throw new JSUCrypt.JSUCryptException("Invalid 'chain mode' parameter");
             }
             this._remaining = data;
         } catch(e) {
@@ -294,7 +294,7 @@ UCrypt.signature || (function (undefined) {
     
     sig._symSign = function(data) {
         try {
-            data = UCrypt.utils.anyToByteArray(data);
+            data = JSUCrypt.utils.anyToByteArray(data);
             data = this._remaining.concat(data);
             this._remaining = [];
             data = this._padder.pad(data, this._blockSize);
@@ -310,8 +310,8 @@ UCrypt.signature || (function (undefined) {
 
     sig._symVerify = function(data, sigToCheck) {
         try {
-            sigToCheck = UCrypt.utils.anyToByteArray(sigToCheck);
-            data = UCrypt.utils.anyToByteArray(data);
+            sigToCheck = JSUCrypt.utils.anyToByteArray(sigToCheck);
+            data = JSUCrypt.utils.anyToByteArray(data);
             data = this._remaining.concat(data);
             this._remaining = [];
             this._padder.pad(data, this._blockSize);
@@ -335,7 +335,7 @@ UCrypt.signature || (function (undefined) {
     };
 
     // --- set it ---
-    UCrypt.signature = sig;
+    JSUCrypt.signature = sig;
 }());
 
 
