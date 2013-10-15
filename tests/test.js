@@ -4,6 +4,7 @@ var test_ecfp         = true;
 var test_sign_ecdsa   = true;
 var test_sign_rsa     = true;
 var test_sign_des     = true;
+var test_sign_hmac    = true;
 
 var test_ciph_des     = true;
 //var test_ciph_aes     = true;
@@ -561,7 +562,7 @@ if (test_ciph_rsa) {
     ];
 
     print("  1024/pkcs1");
-//    rsa_cipher_test(rsaciph, rsaciphpubkey, rsaciphprivkey, rsaciphvector, false);
+    rsa_cipher_test(rsaciph, rsaciphpubkey, rsaciphprivkey, rsaciphvector, false);
 }
 
 
@@ -917,8 +918,84 @@ if (test_sign_ecdsa) {
 
 
 
+// --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+//                                    HASH
+// --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+function test_hmac(hasher, key, data, sig) {
+    var hm, hm_sig;
+    hm = new JSUCrypt.signature.HMAC(hasher);
+
+    hm.init(key, JSUCrypt.signature.MODE_SIGN);
+    hm_sig = hm.sign(data);
+    hm_sig = JSUCrypt.utils.byteArrayToHexStr(hm_sig);
+    if (hm_sig.equals(sig)) {
+        print("       sign: OK");
+    } else {
+        print("       sign: NOK");
+        print("        expected sig:"+sig);
+        print("        hm_sig      :"+hm_sig);
+        hasFailure = true;
+    }
+ 
+    hm = new JSUCrypt.signature.HMAC(hasher);
+    hm.init(key, JSUCrypt.signature.MODE_VERIFY);
+    hm_sig = hm.verify(data,sig);
+    if (hm_sig) {
+        print("       verif: OK");
+    } else {
+        print("       verif: NOK");
+        hasFailure = true;
+    }
+    return hasFailure;
+}
 
 
+if (test_sign_hmac) {
+    var hmac_Key;
+    var hmac_Data;
+    var hmac_HMAC_SHA_224, hmac_HMAC_SHA_256;
+    
+    print("====================================================================");
+    print("                          HMAC TESTING                              ");
+    print("====================================================================");
 
+    print("---                      HMAC/SHA224                 ---*/");
+    hmac_Key = new JSUCrypt.key.HMACKey("0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b");
+    hmac_Data = "4869205468657265";    
+    hmac_HMAC_SHA_224 = "896fb1128abbdf196832107cd49df33f47b4b1169912ba4f53684b22";
+    hasFailure = test_hmac(new JSUCrypt.hash.SHA224(),
+                           hmac_Key, hmac_Data, hmac_HMAC_SHA_224);
+    report("HMAC/SHA224", hasFailure);
+
+    
+    hmac_Key = new JSUCrypt.key.HMACKey("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    hmac_Data = "5468697320697320612074657374207573696e672061206c6172676572207468616e20626c6f636b2d73697a65206b657920616e642061206c6172676572207468616e20626c6f636b2d73697a6520646174612e20546865206b6579206e6565647320746f20626520686173686564206265666f7265206265696e6720757365642062792074686520484d414320616c676f726974686d2e";
+    hmac_HMAC_SHA_224 = "3a854166ac5d9f023f54d517d0b39dbd946770db9c2b95c9f6f565d1";
+    hasFailure = test_hmac(new JSUCrypt.hash.SHA224(),
+                           hmac_Key, hmac_Data, hmac_HMAC_SHA_224);
+    report("HMAC/SHA224", hasFailure);
+
+    
+    print("---                      HMAC/SHA256                 ---*/");
+
+    hmac_Key = new JSUCrypt.key.HMACKey("0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b");
+    hmac_Data = "4869205468657265";
+    hmac_HMAC_SHA_256 = "b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7";
+    hasFailure = test_hmac(new JSUCrypt.hash.SHA256(),
+                           hmac_Key, hmac_Data, hmac_HMAC_SHA_256);
+    report("HMAC/SHA256", hasFailure);
+
+    
+
+    hmac_Key = new JSUCrypt.key.HMACKey("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    hmac_Data = "5468697320697320612074657374207573696e672061206c6172676572207468616e20626c6f636b2d73697a65206b657920616e642061206c6172676572207468616e20626c6f636b2d73697a6520646174612e20546865206b6579206e6565647320746f20626520686173686564206265666f7265206265696e6720757365642062792074686520484d414320616c676f726974686d2e";
+    hmac_HMAC_SHA_256 = "9b09ffa71b942fcb27635fbcd5b0e944bfdc63644f0713938a7f51535c3a35e2";
+    hasFailure = test_hmac(new JSUCrypt.hash.SHA256(),
+                           hmac_Key, hmac_Data, hmac_HMAC_SHA_256);
+    report("HMAC/SHA256", hasFailure);
+
+}
 //************************************************************************//
 printReport();

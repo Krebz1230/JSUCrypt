@@ -22,6 +22,7 @@ files="
 ../dist/lib/rsa.js
 ../dist/lib/ecdsa.js
 ../dist/lib/ecdh.js
+../dist/lib/hmac.js
 "
 #../dist/aes.js
 #../dist/md5.js

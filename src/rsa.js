@@ -31,27 +31,27 @@ limitations under the License.
     if (JSUCrypt.signature && !JSUCrypt.signature.RSA) {
         /** 
          * An RSA Signature
-         * @lends  JSUCrypt.signature.RSA 
-         * @class 
-         * @parameter {JSUCrypt.hash}   hash       a hash
-         * @parameter {JSUCrypt.padder} padder     a padder
+         * @class  JSUCrypt.signature.RSA 
+         * @param {JSUCrypt.hash}   hasher     a hasher
+         * @param {JSUCrypt.padder} padder     a padder
          * @see JSUCrypt.signature
          * @see JSUCrypt.hash
          * @see JSUCrypt.padder
          */
-        var sigrsa = function(hash, padder) {        
+        JSUCrypt.signature.RSA = function(hasher, padder) {        
             if(!padder) {
                 padder = JSUCrypt.padder.None;
             }
             this._padder = padder;
-            this._hash = hash; 
+            this._hash = hasher; 
             this.reset();
         };
 
         /**
+         * @param {X} X X   
          * @see JSUCrypt.signature#init
          */    
-        sigrsa.prototype.init = function(key, mode) {
+        JSUCrypt.signature.RSA.prototype.init = function(key, mode) {
             if (mode == JSUCrypt.signature.MODE_SIGN) {
                 if ( (! key instanceof JSUCrypt.key.RSAPrivateKey) && 
                      (! key instanceof JSUCrypt.key.CRTPrivateKey) ){
@@ -68,28 +68,32 @@ limitations under the License.
             this._mode = mode;
         };
         /**
+         * @param {X} X X   
          * @see JSUCrypt.signature#reset
          * @function
          */
-        sigrsa.prototype.reset     = JSUCrypt.signature._asymReset;
+        JSUCrypt.signature.RSA.prototype.reset     = JSUCrypt.signature._asymReset;
         /**
+         * @param {X} X X   
          * @see JSUCrypt.signature#update
          * @function
          */
-        sigrsa.prototype.update    = JSUCrypt.signature._asymUpdate;
+        JSUCrypt.signature.RSA.prototype.update    = JSUCrypt.signature._asymUpdate;
         /**
+         * @param {X} X X   
          * @see JSUCrypt.signature#sign
          * @function
          */
-        sigrsa.prototype.sign      = JSUCrypt.signature._asymSign;
+        JSUCrypt.signature.RSA.prototype.sign      = JSUCrypt.signature._asymSign;
         /**
+         * @param {X} X X   
          * @see JSUCrypt.signature#verify
          * @function
          */
-        sigrsa.prototype.verify    = JSUCrypt.signature._asymVerify;
+        JSUCrypt.signature.RSA.prototype.verify    = JSUCrypt.signature._asymVerify;
 
 
-        sigrsa.prototype._doSign = function (h) {            
+        JSUCrypt.signature.RSA.prototype._doSign = function (h) {            
             var klen = this._key.size/8;
             //padd
             var blk;
@@ -101,7 +105,7 @@ limitations under the License.
             return JSUCrypt.utils.normalizeByteArrayUL(blk.toByteArray(),klen);
         };
 
-        sigrsa.prototype._doVerify = function (h, sig) {
+        JSUCrypt.signature.RSA.prototype._doVerify = function (h, sig) {
             var klen = this._key.size/8;
             //decrypt
             var blk = JSUCrypt.utils.anyToBigInteger(sig);
@@ -138,8 +142,6 @@ limitations under the License.
             }
             return true;
         };
-
-        JSUCrypt.signature.RSA  = sigrsa;
     }
 
     // --------------------------------------------------------------------------
@@ -148,13 +150,12 @@ limitations under the License.
     if (JSUCrypt.cipher && !JSUCrypt.cipher.RSA) {
         /** 
          * An RSA Cipher
-         * @lends  JSUCrypt.cipher.RSA 
-         * @class 
-         * @parameter {JSUCrypt.padder} padder       a padder
+         * @class JSUCrypt.cipher.RSA 
+         * @param {JSUCrypt.padder} padder       a padder
          * @see JSUCrypt.cipher
          * @see JSUCrypt.padder
          */
-        var ciphrsa = function(padder) {       
+        JSUCrypt.cipher.RSA = function(padder) {       
             if(!padder) {                
                 padder = JSUCrypt.padder.None;
             }
@@ -163,9 +164,10 @@ limitations under the License.
         };
 
         /**
+         * @param {X} X X   
          * @see JSUCrypt.cipher#init
          */
-        ciphrsa.prototype.init = function(key, mode) {
+        JSUCrypt.cipher.RSA.prototype.init = function(key, mode) {
             if (mode == JSUCrypt.cipher.MODE_DECRYPT) {
                 if ( (! key instanceof JSUCrypt.key.RSAPrivateKey) && 
                      (! key instanceof JSUCrypt.key.CRTPrivateKey) ){
@@ -183,22 +185,25 @@ limitations under the License.
         };
         
         /**
+         * @param {X} X X   
          * @see JSUCrypt.cipher#reset
          * @function
          */
-        ciphrsa.prototype.reset     = JSUCrypt.cipher._asymReset;
+        JSUCrypt.cipher.RSA.prototype.reset     = JSUCrypt.cipher._asymReset;
         /**
+         * @param {X} X X   
          * @see JSUCrypt.cipher#update
          * @function
          */
-        ciphrsa.prototype.update    = JSUCrypt.cipher._asymUpdate;
+        JSUCrypt.cipher.RSA.prototype.update    = JSUCrypt.cipher._asymUpdate;
         /**
+         * @param {X} X X   
          * @see JSUCrypt.cipher#finalize
          * @function
          */
-        ciphrsa.prototype.finalize  = JSUCrypt.cipher._asymFinalize;
+        JSUCrypt.cipher.RSA.prototype.finalize  = JSUCrypt.cipher._asymFinalize;
 
-        ciphrsa.prototype._doCrypt  = function(data) {
+        JSUCrypt.cipher.RSA.prototype._doCrypt  = function(data) {
             var klen = this._key.size/8;
             //padd
             var blk;            
@@ -211,7 +216,7 @@ limitations under the License.
             return blk;
         };
 
-        ciphrsa.prototype._doDecrypt = function(data) {
+        JSUCrypt.cipher.RSA.prototype._doDecrypt = function(data) {
             var klen = this._key.size/8;
             //decrypt
             var blk;
@@ -222,12 +227,8 @@ limitations under the License.
             blk = this._padder.unpad(blk, klen, true);
             return blk;            
         };
-
-        JSUCrypt.cipher.RSA     = ciphrsa; 
-
     }
-    
- 
+  
     // --------------------------------------------------------------------------
     //                                   Keys
     // --------------------------------------------------------------------------
@@ -281,3 +282,4 @@ limitations under the License.
     };
 
 }());
+

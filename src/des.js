@@ -22,8 +22,6 @@ limitations under the License.
  */
 
 
-
-
 ((JSUCrypt.signature && JSUCrypt.signature.DES) && (JSUCrypt.ciper && JSUCrypt.ciper.DES)) || (function (undefined) {
 
     // --------------------------------------------------------------------------
@@ -32,14 +30,13 @@ limitations under the License.
     if (JSUCrypt.signature && !JSUCrypt.signature.DES) {
         /** 
          * An DES Signature
-         * @lends  JSUCrypt.signature.DES 
-         * @class 
-         * @parameter {JSUCrypt.padder} padder       a padder
-         * @parameter {number}        chain_mode   ECB, CBC, ....
+         * @class JSUCrypt.signature.DES
+         * @param {JSUCrypt.padder} padder       a padder
+         * @param {number}        chain_mode   ECB, CBC, ....
          * @see JSUCrypt.cipher
          * @see JSUCrypt.padder
          */
-        var sigdes = function(padder, chain_mode) {
+        JSUCrypt.signature.DES = function(padder, chain_mode) {
             if(!padder) {
                 padder = JSUCrypt.padder.None;
             }
@@ -47,12 +44,13 @@ limitations under the License.
             this._chain_mode = chain_mode;
             this.reset();
         };
-
- 
+        
+        
         /**
+         * @param {X} X X   
          * @see JSUCrypt.signature#init
          */
-        sigdes.prototype.init = function(key, mode, IV) {
+        JSUCrypt.signature.DES.prototype.init = function(key, mode, IV) {
             if ((mode != JSUCrypt.signature.MODE_SIGN) && 
                 (mode != JSUCrypt.signature.MODE_VERIFY)){
                 throw new JSUCrypt.JSUCryptException("Invalid 'mode' parameter");
@@ -64,31 +62,32 @@ limitations under the License.
         };
         
         /**
+         * @param {X} X X   
          * @see JSUCrypt.signature#reset
          * @function
          */
-        sigdes.prototype.reset             = JSUCrypt.signature._symReset;
+        JSUCrypt.signature.DES.prototype.reset             = JSUCrypt.signature._symReset;
         /**
+         * @param {X} X X   
          * @see JSUCrypt.signature#update
          * @function
          */       
-        sigdes.prototype.update            = JSUCrypt.signature._symUpdate;
+        JSUCrypt.signature.DES.prototype.update            = JSUCrypt.signature._symUpdate;
         /**
+         * @param {X} X X   
          * @see JSUCrypt.signature#sign
          * @function
          */
-        sigdes.prototype.sign              = JSUCrypt.signature._symSign;
+        JSUCrypt.signature.DES.prototype.sign              = JSUCrypt.signature._symSign;
         /**
+         * @param {X} X X   
          * @see JSUCrypt.signature#verify
          * @function
          */
-        sigdes.prototype.verify            = JSUCrypt.signature._symVerify;
+        JSUCrypt.signature.DES.prototype.verify            = JSUCrypt.signature._symVerify;
 
-        sigdes.prototype._doEncryptBlock   = _doCrypt;
-        sigdes.prototype._blockSize        = 8;
-
-        JSUCrypt.signature.DES = sigdes;
-
+        JSUCrypt.signature.DES.prototype._doEncryptBlock   = _doCrypt;
+        JSUCrypt.signature.DES.prototype._blockSize        = 8;
     }
 
     // --------------------------------------------------------------------------
@@ -97,14 +96,13 @@ limitations under the License.
     if (JSUCrypt.cipher && !JSUCrypt.cipher.DES) {
         /** 
          * An DES Cipher
-         * @lends  JSUCrypt.cipher.DES
-         * @class 
-         * @parameter {JSUCrypt.padder} padder       a padder
-         * @parameter {number}        chain_mode   ECB, CBC, ....
+         * @class JSUCrypt.cipher.DES
+         * @param {JSUCrypt.padder} padder       a padder
+         * @param {number}          chain_mode   ECB, CBC, ....
          * @see JSUCrypt.cipher
          * @see JSUCrypt.padder
          */
-        var ciphdes = function(padder, chain_mode) {
+        JSUCrypt.cipher.DES = function(padder, chain_mode) {
             if(!padder) {
                 padder = JSUCrypt.padder.None;
             }
@@ -114,9 +112,10 @@ limitations under the License.
         };
         
         /**
+         * @param {X} X X   
          * @see JSUCrypt.cipher#init
          */
-        ciphdes.prototype.init = function(key, mode, IV) {      
+        JSUCrypt.cipher.DES.prototype.init = function(key, mode, IV) {      
             var enc_dec;
             if (mode == JSUCrypt.cipher.MODE_ENCRYPT) {
                 enc_dec = EN0;
@@ -131,43 +130,42 @@ limitations under the License.
             this.reset();
         };
         /**
+         * @param {X} X X   
          * @see JSUCrypt.cipher#reset
          * @function
          */
-        ciphdes.prototype.reset             = JSUCrypt.cipher._symReset;
+        JSUCrypt.cipher.DES.prototype.reset             = JSUCrypt.cipher._symReset;
         /**
+         * @param {X} X X   
          * @see JSUCrypt.cipher#update
          * @function
          */
-        ciphdes.prototype.update            = JSUCrypt.cipher._symUpdate;
+        JSUCrypt.cipher.DES.prototype.update            = JSUCrypt.cipher._symUpdate;
         /**
+         * @param {X} X X   
          * @see JSUCrypt.cipher#finalize
          * @function
          */
-        ciphdes.prototype.finalize          = JSUCrypt.cipher._symFinalize;
+        JSUCrypt.cipher.DES.prototype.finalize          = JSUCrypt.cipher._symFinalize;
 
-        ciphdes.prototype._blockSize        = 8;
-        ciphdes.prototype._doEncryptBlock   = _doCrypt;
-        ciphdes.prototype._doDecryptBlock   = _doCrypt;
-
-        JSUCrypt.cipher.DES    = ciphdes;
+        JSUCrypt.cipher.DES.prototype._blockSize        = 8;
+        JSUCrypt.cipher.DES.prototype._doEncryptBlock   = _doCrypt;
+        JSUCrypt.cipher.DES.prototype._doDecryptBlock   = _doCrypt;
     }
-    
-    
+
     // --------------------------------------------------------------------------
     //                                   Keys
     // --------------------------------------------------------------------------
 
     /**
-     * Public DES key container.
+     * DES key container.
      *
-     * @param {anyBA}       key        key
+     * @param {anyBA}  key   key value
      * @class
      */
     JSUCrypt.key.DESKey = function (key) {
         this.rawKey = JSUCrypt.utils.anyToByteArray(key);
     };
-
 
     // --------------------------------------------------------------------------
     //                                   ...

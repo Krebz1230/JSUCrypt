@@ -8,6 +8,7 @@
                      "src/keys.js",  "src/cipher.js", "src/signature.js", "src/hash.js", "src/ka.js",
                      "src/pad.js", "src/ecfp.js",
                      "src/ecdsa.js",  "src/rsa.js", "src/des.js", 
+                     "src/hmac.js",
                      "src/sha256.js",  "src/ripemd160.js", "src/sha1.js", "src/helpers.js",
                      "src/ecdh.js" ],
         "exclude": [],

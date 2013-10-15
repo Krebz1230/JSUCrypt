@@ -30,13 +30,12 @@ limitations under the License.
 JSUCrypt.signature.ECDSA  ||  (function (undefined) {
     /** 
      * An ECDSA Signature
-     * @lends  JSUCrypt.signature.ECDSA
-     * @class 
-     * @parameter {JSUCrypt.padder} padder       a padder
+     * @class  JSUCrypt.signature.ECDSA
+     * @param {JSUCrypt.hash} hasher an hasher
      * @see JSUCrypt.cipher
-     * @see JSUCrypt.padder
+     * @see JSUCrypt.hash
      */
-    var ecdsa = function(hash) {        
+    JSUCrypt.signature.ECDSA = function(hash) {        
         this._hash = hash; 
         this.reset();
     };
@@ -44,7 +43,7 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
     /**
      * @see JSUCrypt.signature#init
      */    
-    ecdsa.prototype.init = function(key, mode) {
+    JSUCrypt.signature.ECDSA.prototype.init = function(key, mode) {
         if (mode == JSUCrypt.signature.MODE_SIGN) {
             if ( ! key instanceof JSUCrypt.key.EcFpPrivateKey) {
                 throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
@@ -61,27 +60,31 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
         this.reset();
     };
     /**
+     * @param {X} X X   
      * @see JSUCrypt.signature#reset
      * @function
      */
-    ecdsa.prototype.reset     = JSUCrypt.signature._asymReset;
+    JSUCrypt.signature.ECDSA.prototype.reset     = JSUCrypt.signature._asymReset;
     /**
+     * @param {X} X X   
      * @see JSUCrypt.signature#update
      * @function
      */
-    ecdsa.prototype.update    = JSUCrypt.signature._asymUpdate;
+    JSUCrypt.signature.ECDSA.prototype.update    = JSUCrypt.signature._asymUpdate;
     /**
+     * @param {X} X X   
      * @see JSUCrypt.signature#sign
      * @function
      */
-    ecdsa.prototype.sign      = JSUCrypt.signature._asymSign;
+    JSUCrypt.signature.ECDSA.prototype.sign      = JSUCrypt.signature._asymSign;
     /**
+     * @param {X} X X   
      * @see JSUCrypt.signature#version
      * @function
      */
-    ecdsa.prototype.verify    = JSUCrypt.signature._asymVerify;
+    JSUCrypt.signature.ECDSA.prototype.verify    = JSUCrypt.signature._asymVerify;
 
-    ecdsa.prototype._doSign = function (h) {  
+    JSUCrypt.signature.ECDSA.prototype._doSign = function (h) {  
         var order = this._key.domain.order;        
 
         h = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(h),16);
@@ -124,7 +127,7 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
         return [0x30, r.length+s.length].concat(r).concat(s);        
     };
 
-    ecdsa.prototype._doVerify = function(h, sig) {
+    JSUCrypt.signature.ECDSA.prototype._doVerify = function(h, sig) {
         sig = JSUCrypt.utils.anyToByteArray(sig);
         var order = this._key.domain.order;
 
@@ -165,6 +168,4 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
         return verified;
     };
 
-    // --- Set it ---
-    JSUCrypt.signature.ECDSA = ecdsa;
 }());

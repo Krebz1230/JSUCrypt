@@ -85,12 +85,6 @@ JSUCrypt.cipher || (function (undefined) {
      * @lends  JSUCrypt.cipher 
      */
     var ciph = {
-        /** @class JSUCrypt.cipher.DES */
-        DES: undefined,
-        /** @class JSUCrypt.cipher.AES */
-        AES: undefined,
-        /** @class JSUCrypt.cipher.RSA */
-        RSA: undefined,
     };
 
     /** 

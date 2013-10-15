@@ -50,6 +50,7 @@ JSUCrypt.hash.RIPEMD160 || (function(undefined) {
      */
     RIPEMD160.prototype.finalize     = JSUCrypt.hash._finalize;
 
+    RIPEMD160.prototype.blockSize    = 64;
     RIPEMD160.prototype.PKCS1_OID    = [];
     RIPEMD160.prototype._BE          = false;
     RIPEMD160.prototype._nWords      = 5;

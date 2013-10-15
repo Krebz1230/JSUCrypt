@@ -64,9 +64,17 @@ limitations under the License.
  * 
  * _padder_ is the padder to use. See above.
  * 
+ * #### HMAC
+ * 
+ *  To create en HMAC signature:
+ * 
+ *  - new JSUCrypt.signature.HMAC(hasher)
+ *
+ *   * _hasher_ is a hasher object. 
+ *
  * #### ECDSA/RSA
  * 
- * to create en ECDSA/RSA signature:
+ * To create en ECDSA/RSA signature:
  * 
  *    - new JSUCrypt.signature.XXX(hasher)
  * 
@@ -111,14 +119,6 @@ JSUCrypt.signature || (function (undefined) {
      * @lends  JSUCrypt.signature 
      */
     var sig = {
-         /** @class JSUCrypt.signature.DES */
-        DES: undefined,
-        /** @class JSUCrypt.signature.AES */
-        AES: undefined,
-        /** @class JSUCrypt.signature.RSA */
-        RSA: undefined,
-        /** @class JSUCrypt.signature.ECDSA */
-        ECDSA: undefined,
     };
 
     /** 

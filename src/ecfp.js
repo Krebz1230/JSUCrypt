@@ -338,8 +338,8 @@ JSUCrypt.ECFp ||  (function (undefined) {
     /**
      * class container for a,b,p.
      *
-     * @param {EcFpCurve}     curve
-     * @param {AffinePoint}   G
+     * @param {JSUCrypt.ECFp.EcFpCurve}     curve
+     * @param {JSUCrypt.ECFp.AffinePoint}   G
      * @param {anyBN}           order
      * @param {anyBN}           cofactor
      *
@@ -361,9 +361,11 @@ JSUCrypt.ECFp ||  (function (undefined) {
         this.cofactor = JSUCrypt.utils.anyToBigInteger(cofactor);    
     };
     
-    /***
+    /**
      * Build the EcFpDomain correpondig to the specification.
-     * @memberof JSUCrypt.ECFp
+     *
+     * @param {JSUCrypt.ECFp.curveDomainSpecs} spec curve domain specification
+     * @see  JSUCrypt.ECFp.EcFpDomain
      */
     ecfp.getEcDomainBySpec = function(spec) {
         if (!spec) {
@@ -382,11 +384,10 @@ JSUCrypt.ECFp ||  (function (undefined) {
     };
     
     /**
-     * @function
-     * 
      * Build the EcFpDomain correpondig to the given name.
-     * @see  JSUCrypt.ECFp.EcFpDomain
-     * @memberof JSUCrypt.ECFp
+     *
+     * @param {string} name   curve name
+     * @see  JSUCrypt.ECFp.curveNames
      */
     ecfp.getEcDomainByName = function (name) {        
         return  ecfp.getEcDomainBySpec(ecfp.curveDomainSpecs[name]);
@@ -402,7 +403,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
      *
      * @param {anyBN}         x
      * @param {anyBN}         y
-     * @param {EcFpCurve}     curve
+     * @param {JSUCrypt.ECFp.EcFpCurve}     curve
      *
      * @class
      */
@@ -458,7 +459,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
          * Return a new AffinePoint which is the sum of this and the given parameter.
          * This method assume that the 'curve' properties  of each point is defined
          *
-         * @param {AffinePoint|ProjectivePoint} point  the point to add
+         * @param {JSUCrypt.ECFp.AffinePoint|JSUCrypt.ECFp.ProjectivePoint} point  the point to add
          */
         this.add = function(point) {
             var thisProj    = this.toProjective();
@@ -499,7 +500,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
      * 
      * @param {anyBN}           x
      * @param {anyBN}           y
-     * @param {EcFpCurve}     curve
+     * @param {JSUCrypt.ECFp.EcFpCurve}     curve
      *
      * @class
      */
@@ -530,7 +531,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
         // --- Projective Point ---
         
         /**
-         * @param {AffinePoint|ProjectivePoint} point to add to this
+         * @param {JSUCrypt.ECFp.AffinePoint|JSUCrypt.ECFp.ProjectivePoint} point to add to this
          */
         this.add  = function(point) {
             /*
@@ -664,8 +665,8 @@ JSUCrypt.ECFp ||  (function (undefined) {
      * Public EC key container.
      *
      * @param {number}      size     key size in bits 
-     * @param {EcFpDomain}  domain   curve Domain
-     * @param {AffinePoint} W        public key W
+     * @param {JSUCrypt.ECFp.EcFpDomain}  domain   curve Domain
+     * @param {JSUCrypt.ECFp.AffinePoint} W        public key W
      * @class
      */
      JSUCrypt.key.EcFpPublicKey = function (size, domain, point) {
@@ -680,14 +681,14 @@ JSUCrypt.ECFp ||  (function (undefined) {
          this.size     = size;
          /**
           * domain  
-          * @property {EcFpDomain} 
+          * @property {JSUCrypt.ECFp.EcFpDomain} 
           */
          this.domain   = domain;
          
          if (point) {
              /**
               * Public key value 
-              * @property {AffinePoint} public point
+              * @property {JSUCrypt.ECFp.AffinePoint} public point
               */
              this.W        = new JSUCrypt.ECFp.AffinePoint(point.x, point.y, domain.curve);
         }
@@ -697,7 +698,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
      * Private EC key container.
      *
      * @param {number}      size     key size in bits 
-     * @param {EcFpDomain}  domain   curve Domain
+     * @param {JSUCrypt.ECFp.EcFpDomain}  domain   curve Domain
      * @param {anyBN}       scalar   private key scalar
      * @class
      */
@@ -712,7 +713,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
          this.size   = size;
          /**
           * domain  
-          * @property {EcFpDomain} 
+          * @property JSUCrypt.ECFp.{EcFpDomain} 
           */
          this.domain = domain;
          
@@ -728,7 +729,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
     /**
      * Generate EC Key pair.
      * @params {number}     size     key size in bits
-     * @param {EcFpDomain}  domain   curve Domain
+     * @param {JSUCrypt.ECFp.EcFpDomain}  domain   curve Domain
      */
      JSUCrypt.key.generateECFpPair = function(size, domain) {        
         size = size/8;
@@ -747,8 +748,6 @@ JSUCrypt.ECFp ||  (function (undefined) {
         return [new JSUCrypt.key.EcFpPublicKey(size, domain, W),
                 new JSUCrypt.key.EcFpPrivateKey(size, domain, scal)];
     };
-
-
 
 
 }());
