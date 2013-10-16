@@ -3,7 +3,7 @@ JSUCrypt
 
 ## Introduction
 
-A tiny, unified and simple crypto library.   
+A tiny, unified and simple JavaScript crypto library.   
 
 WARNING: Beta stage.
 
