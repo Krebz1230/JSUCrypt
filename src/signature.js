@@ -138,7 +138,7 @@ JSUCrypt.signature || (function (undefined) {
      */
     sig.MODE_CBC = 1;
     /**  
-     * CFB Mode  
+     * CFB Mode  **UNTESTED**
      * @constant
      */
     sig.MODE_CFB = 2;

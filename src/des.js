@@ -42,6 +42,7 @@ limitations under the License.
             }
             this._padder = padder;
             this._chain_mode = chain_mode;
+            _setIV.call(this);
             this.reset();
         };
         
@@ -108,6 +109,7 @@ limitations under the License.
             }
             this._padder = padder;
             this._chain_mode = chain_mode;
+            _setIV.call(this);
             this.reset();
         };
         
@@ -192,7 +194,7 @@ limitations under the License.
             }
             this._IV = [].concat(IV);
         } else {
-            this._IV = undefined;
+            this._IV = this._IV = [0,0,0,0,0,0,0,0];
         }        
     }
 

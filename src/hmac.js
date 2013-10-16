@@ -107,7 +107,7 @@ limitations under the License.
     JSUCrypt.signature.HMAC.prototype.sign              = function(data) {
         var h = this._hasher.finalize(data);
         var blk = [].append(this._internalKey);
-        var l = blk.length
+        var l = blk.length;
         for (var i = 0; i<l; i++){
             blk[i] = blk[i]^opad;
         }

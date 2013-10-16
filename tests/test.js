@@ -7,7 +7,7 @@ var test_sign_des     = true;
 var test_sign_hmac    = true;
 
 var test_ciph_des     = true;
-//var test_ciph_aes     = true;
+var test_ciph_aes     = true;
 var test_ciph_rsa     = true;
 
 var test_ka_ecdh      = true;
@@ -37,7 +37,6 @@ function printReport()  {
         return str;
     }
 }
-
 // --------------------------------------------------------------------------
 // --------------------------------------------------------------------------
 //                                    DES
@@ -410,6 +409,81 @@ if (test_sign_des)  {
 
     report("Signature DES/CBC/NOPAD", hasFailure);
     hasFailure = false;
+
+}
+
+// --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+//                                    AES
+// --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+if (test_ciph_aes)  {
+    print("====================================================================");
+    print("                        AES CIPHER TESTING                          ");
+    print("====================================================================");
+
+    // ------------------------------------------------------------------
+    print("---                      AES/ECB/NOPAD                 ---*/");
+    hasFailure = false;
+    var aeskey_128_ecb_nopad = new JSUCrypt.key.AESKey("2b7e151628aed2a6abf7158809cf4f3c");
+    var aesvector_128_ecb_nopad = [
+        ["6bc1bee22e409f96e93d7e117393172a","3ad77bb40d7a3660a89ecaf32466ef97"],
+    ];
+
+    var aeskey_192_ecb_nopad = new JSUCrypt.key.AESKey("8e73b0f7da0e6452c810f32b809079e562f8ead2522c6b7b");
+    var aesvector_192_ecb_nopad = [
+        ["6bc1bee22e409f96e93d7e117393172a","bd334f1d6e45f25ff712a214571fa5cc"],
+    ];
+
+    var aeskey_256_ecb_nopad = new JSUCrypt.key.AESKey("603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4");
+    var aesvector_256_ecb_nopad = [
+        ["6bc1bee22e409f96e93d7e117393172a","f3eed1bdb5d2a03c064b5a7e3db181f8"],
+    ];
+
+    cipher = new JSUCrypt.cipher.AES(JSUCrypt.padder.None, JSUCrypt.cipher.MODE_ECB);
+
+    print("  128 its key");
+    des_ciph_test(cipher, aeskey_128_ecb_nopad,  aesvector_128_ecb_nopad);
+    print("  192 bits key");
+    des_ciph_test(cipher, aeskey_192_ecb_nopad,  aesvector_192_ecb_nopad);
+    print("  256 bits key");
+    des_ciph_test(cipher, aeskey_256_ecb_nopad,  aesvector_256_ecb_nopad);
+
+    report("Cipher AES/ECB/NOPAD", hasFailure);
+
+    // ------------------------------------------------------------------
+    print("---                      AES/CBC/NOPAD                 ---*/");
+    hasFailure = false;
+    var aeskey_128_cbc_nopad = new JSUCrypt.key.AESKey("2b7e151628aed2a6abf7158809cf4f3c");
+    var aesvector_128_cbc_nopad = [
+        ["6bc1bee22e409f96e93d7e117393172a","3ad77bb40d7a3660a89ecaf32466ef97", "00000000000000000000000000000000"],
+        ["6bc1bee22e409f96e93d7e117393172a","7649abac8119b246cee98e9b12e9197d", "000102030405060708090A0B0C0D0E0F"],
+    ];
+
+    var aeskey_192_cbc_nopad = new JSUCrypt.key.AESKey("8e73b0f7da0e6452c810f32b809079e562f8ead2522c6b7b");
+    var aesvector_192_cbc_nopad = [
+        ["6bc1bee22e409f96e93d7e117393172a","bd334f1d6e45f25ff712a214571fa5cc", "00000000000000000000000000000000"],
+        ["6bc1bee22e409f96e93d7e117393172a","4f021db243bc633d7178183a9fa071e8", "000102030405060708090A0B0C0D0E0F"],
+    ];
+
+    var aeskey_256_cbc_nopad = new JSUCrypt.key.AESKey("603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4");
+    var aesvector_256_cbc_nopad = [
+        ["6bc1bee22e409f96e93d7e117393172a","f3eed1bdb5d2a03c064b5a7e3db181f8", "00000000000000000000000000000000"],
+        ["6bc1bee22e409f96e93d7e117393172a","f58c4c04d6e5f1ba779eabfb5f7bfbd6", "000102030405060708090A0B0C0D0E0F"],
+    ];
+
+    cipher = new JSUCrypt.cipher.AES(JSUCrypt.padder.None, JSUCrypt.cipher.MODE_CBC);
+
+    print("  128 bits key");
+    des_ciph_test(cipher, aeskey_128_cbc_nopad,  aesvector_128_cbc_nopad);
+    print("  192 bits key");
+    des_ciph_test(cipher, aeskey_192_cbc_nopad,  aesvector_192_cbc_nopad);
+    print("  256 bits key");
+    des_ciph_test(cipher, aeskey_256_cbc_nopad,  aesvector_256_cbc_nopad);
+
+    report("Cipher AES/CBC/NOPAD", hasFailure);
+
+
 
 }
 

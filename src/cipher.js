@@ -110,12 +110,12 @@ JSUCrypt.cipher || (function (undefined) {
      */
     ciph.MODE_CBC = 2;
     /**  
-     * CFB Mode  
+     * CFB Mode  **UNTESTED**
      * @constant
      */
     ciph.MODE_CFB = 3;
-    /** 
-     * OFB Mode  
+    /*
+     * OFB Mode  **UNTESTED** **UNIMPLEMENTED**
      * @constant
      */
     ciph.MODE_OFB = 4;    
@@ -127,7 +127,7 @@ JSUCrypt.cipher || (function (undefined) {
      * @memberof  JSUCrypt.cipher
      * @abstract
      * @param {key}    key    the key
-     * @param {number} mode   MODE_ENCRYPT or .MODE_DECRYPT 
+     * @param {number} mode   MODE_ENCRYPT or MODE_DECRYPT 
      */       
     /** 
      * Reset the cipher
@@ -184,11 +184,7 @@ JSUCrypt.cipher || (function (undefined) {
 
     /* ------- Symetric helper ------- */
     ciph._symReset  = function() {
-        if (this._IV) {
-            this._block     = [].concat(this._IV);
-        } else {
-            this._block     = [0,0,0,0,0,0,0,0];
-        }
+        this._block     = [].concat(this._IV);
         this._remaining = [];
     };
     ciph._symUpdate = function(data) {
@@ -227,10 +223,10 @@ JSUCrypt.cipher || (function (undefined) {
                 case  JSUCrypt.cipher.MODE_CBC:
                     while (data.length >= this._blockSize) {
                         //xor
-                        for (i = 0; i<8; i++) {
+                        for (i = 0; i<this._blockSize; i++) {
                             this._block[i] ^=  data[i];
                         }
-                        data = data.slice(8);
+                        data = data.slice(this._blockSize);
                         //crypt
                         this._block = this._doEncryptBlock(this._block);
                         x.append(this._block);
@@ -242,13 +238,13 @@ JSUCrypt.cipher || (function (undefined) {
                         //crypt
                         this._block = this._doEncryptBlock(this._block);
                         //xor
-                        for (i = 0; i<8; i++) {
+                        for (i = 0; i<this._blockSize; i++) {
                             this._block[i] ^=  data[i];
                         }
                         //
                         x.append(this._block[i]);
                         //next
-                        data = data.slice(8);                    
+                        data = data.slice(this._blockSize);                    
                     }
                     break;
                     //WAT
@@ -274,14 +270,14 @@ JSUCrypt.cipher || (function (undefined) {
                         //decrypt
                         decBlk = this._doDecryptBlock(data);
                         //xor and keep
-                        for (i = 0; i<8; i++) {
+                        for (i = 0; i<this._blockSize; i++) {
                             decBlk[i] ^=  this._block[i];
                         }
-                        this._block =  data.slice(0,8);
+                        this._block =  data.slice(0,this._blockSize);
                         //
                         x.append(decBlk);
                         //next
-                        data = data.slice(8);
+                        data = data.slice(this._blockSize);
                     }                
                     break;
                     //CFB
@@ -290,14 +286,14 @@ JSUCrypt.cipher || (function (undefined) {
                         //decrypt
                         decBlk = this._doDecryptBlock(this._block);
                         //xor and keep
-                        for (i = 0; i<8; i++) {
+                        for (i = 0; i<this._blockSize; i++) {
                        decBlk[i] ^= data[i];
                         }
-                        this._block =  data.slice(0,8);
+                        this._block =  data.slice(0,this._blockSize);
                         //
                     x.puxh(decBlk);
                         //next
-                        data = data.slice(8);
+                        data = data.slice(this._blockSize);
                     }
                     break;
                     //WAT
