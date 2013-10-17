@@ -1,0 +1,23 @@
+
+### About types
+
+The APIs documentation use the follwing type convention:
+
+ - 'byte[]' a array of number, with all element comprised between 0 and 256
+
+ - 'anyBN' type for parameters means any type convertable in BigNumber with 
+ the 'anyToBigInteger' function. For now anyBN can be:
+
+     - {number}     int number              eg: 2
+     - {string}     literal HexString       eg: "abcd"  (no leading Ox)
+     - {byte[]}     array of byte           eg: [ 42, 12, 128 ]
+     - {BigInteger} 
+
+
+ - 'anyBA' type for parameters means any type convertable in byte array with 
+ the 'anyToByteArray' function. For now anyBA can be:
+
+     - {number}     int number              eg: 2
+     - {string}     literal HexString       eg: "abcd"  (no leading Ox), (ie 0xab, 0xcd)
+     - {byte[]}     array of byte           eg: [ 42, 12, 128 ]
+

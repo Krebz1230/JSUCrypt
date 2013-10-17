@@ -10,6 +10,8 @@ help:
 doc:
 	rm -rf dist/doc
 	mkdir -p dist/doc
+	cat README.md > src/README.md
+	cat src/README.md.in >> src/README.md
 	/opt/jsdoc/jsdoc -c doc-conf.json
 
 lib:
