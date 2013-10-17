@@ -94,8 +94,7 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
             var k = [];
             var i = this._key.size>>>3;
             while (i--) {
-                //k.push(Math.floor(Math.random()*255));
-                k.push(42);
+                k.push(Math.floor(Math.random()*255));
             }
             k = JSUCrypt.utils.byteArrayToHexStr(k);
             k = new BigInteger(k,16);
@@ -103,7 +102,6 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
             
             //compute kG
             var  kG   = this._key.domain.G.multiply(k);
-            
             //extract sig r,s
             var  x     = kG.x.mod(order);
             if (k.equals(BigInteger.ZERO)) {
