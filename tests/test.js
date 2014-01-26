@@ -1,18 +1,23 @@
-var test_hash         = true;
+//print = require('util').print;
 
-var test_ecfp         = true;
-var test_sign_ecdsa   = true;
-var test_sign_rsa     = true;
-var test_sign_des     = true;
-var test_sign_hmac    = true;
 
-var test_ciph_des     = true;
-var test_ciph_aes     = true;
-var test_ciph_rsa     = true;
+var test_hash              = true;
 
-var test_ka_ecdh      = true;
+var test_ecfp              = true;
+var test_sign_ecdsa        = true;
+var test_sign_ecdsa_rf6979 = true;
+var test_sign_rsa          = true;
+var test_sign_des          = true;
+var test_sign_hmac         = true;
 
-var  hasFailure = false;
+var test_ciph_des          = true;
+var test_ciph_aes          = true;
+var test_ciph_rsa          = true;
+
+var test_ka_ecdh           = true;
+
+var  hasFailure            = false;
+
 var  globalReport = {};
 
 
@@ -760,33 +765,56 @@ if (test_hash) {
         "",
         "abc",
         "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdef",
-        "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
+        "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz",
+        "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz",
     ];
 
     var sha1_answers = [
         "da39a3ee5e6b4b0d3255bfef95601890afd80709",
         "a9993e364706816aba3e25717850c26c9cd0d89d",
         "281990516def979bcf61c25b05e068e0ffab4827",
-        "f2090afe4177d6f288072a474804327d0f481ada"
+        "f2090afe4177d6f288072a474804327d0f481ada",
+        "3dd649e627ddc719f9dc08101c5d0df7d25ce140"
     ];
 
     var sha224_answers = [
         "d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f",
         "23097d223405d8228642a477bda255b32aadbce4bda0b3f7e36c9da7",
         "54f109ed7418ae9d9a212473672cdcbc4771af5f7d6bd2d186d409fb",
-        "92d2aa4e53e2120ac38d0afabf59d316d2632f8be35a4059dc005e8d"
+        "92d2aa4e53e2120ac38d0afabf59d316d2632f8be35a4059dc005e8d",
+        "5ce2230eb3e2f2bb81e0524fc3ea3d60f3f442e7cb33874314da1527"
     ];
     var sha256_answers = [
         "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
         "690c197164b3bafc3a2b94834a9607edbec7b32bb77e33c115f7a3e03fbc90a7",
-        "2f617f4789492c761be62ea114a24952fd681333e9838f2fa85b9d104e326a47"
+        "2f617f4789492c761be62ea114a24952fd681333e9838f2fa85b9d104e326a47",
+        "a85e52d77d9a6a6b31713d547bc2e8256588c21aec8e32dddedda253d5850e21"
     ];
+
+    var sha384_answers = [
+        "38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b",
+        "cb00753f45a35e8bb5a03d699ac65007272c32ab0eded1631a8b605a43ff5bed8086072ba1e7cc2358baeca134c825a7",
+        "c2f59a0ec67354bc83210c2a794f28088f7c2740c2bcf1b704d325c6c9150d37e1f14d30ccab6a2a2775bce6e0eb913c",
+        "0508d72283e0bac819fe12f113bf607b9ec7c849509880489de7d47b29a4e948476dd1bc96a30d74b15d3ce6d03bb786",
+        "f62d25936c182ad37233f025d9576a851a3cb96c1ade7e8f4be7be90af7921985a10f7c1e035c5e6078364e8590ba1dd"
+
+    ];
+
+    var sha512_answers = [
+        "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e",
+        "ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f",
+        "985277c2129ffe22dda3ddc9199cbdee1bf83f602fa9c813d5f5e9266af500d44abf438991b6b3cfe3eb30b53598268fc489a929968564bd3c4afdd6fdd4ae2a",
+        "f2d3c747f65569e7c3b8bf988e3702e3f9f9e80be8f044473ee1b36cc347b370de8ee963094dc1d5cfcd96148eac8678aa8877deff1b74a2b9a123407a0a1714",
+        "2cbdf4d2dcd72972f733e6a870c5ed599566ddf47c563c18733c07b59c00b3f1cf9bfc58bd4869c792d744bc4d91c0e0982ae78be21e242f25e217a2cf39585b"
+    ];
+
     var ripemd160_answers = [
         "9c1185a5c5e9fc54612808977ee8f548b2258d31",
         "8eb208f7e05d987a9b044a8e98c6b087f15a0bfc",
         "9ede1cc6e629f72b99aa1278e95c38dbf2a67f3b",
-        "f700135102741e9efd12df1085be0d631ebcbc06"
+        "f700135102741e9efd12df1085be0d631ebcbc06",
+        "5bcb57de59513d0abc6cba700d09a4f52dbe5038"
     ];
 
 
@@ -801,6 +829,7 @@ if (test_hash) {
             r = JSUCrypt.utils.byteArrayToHexStr(r);
             if (answers[i].equals(r)) {
                 print("    "+i+" : OK");
+                print("   hash: "+r);
             } else {
                 print("    "+i+" : NOK");
                 print("   exp: "+answers[i]);
@@ -818,9 +847,10 @@ if (test_hash) {
         r = hash.finalize(blk);
         r = JSUCrypt.utils.byteArrayToHexStr(r);
         if (answers[inputs.length-1].equals(r)) {
-            print("    "+i+" : OK");
+            print("    "+i+" : OK (upd mode)");
+            print("   hash: "+r);
         } else {
-            print("    "+i+" : NOK");
+            print("    "+i+" : NOK (upd mode)");
             print("   exp: "+answers[inputs.length-1]);
             print("   got: "+r);
             hasFailure = true;
@@ -830,10 +860,12 @@ if (test_hash) {
         hasFailure = false;
     }
 
-
+    
     test("SHA1",      new JSUCrypt.hash.SHA1(),      sha1_answers);
     test("SHA224",    new JSUCrypt.hash.SHA224(),    sha224_answers);
     test("SHA256",    new JSUCrypt.hash.SHA256(),    sha256_answers);
+    test("SHA384",    new JSUCrypt.hash.SHA384(),    sha384_answers);
+    test("SHA512",    new JSUCrypt.hash.SHA512(),    sha512_answers);
     test("RIPEMD160", new JSUCrypt.hash.RIPEMD160(), ripemd160_answers);
 
 }
@@ -922,7 +954,6 @@ if (test_sign_ecdsa) {
     var sha  = new  JSUCrypt.hash.SHA1();
     var ecsig = new JSUCrypt.signature.ECDSA(sha);
     var input,sig, wrongsig;
-
     //secp256k1
     domain =  JSUCrypt.ECFp.getEcDomainByName("secp256k1");
     privkey = new JSUCrypt.key.EcFpPrivateKey(
@@ -942,7 +973,7 @@ if (test_sign_ecdsa) {
     ver = ecsig.verify(input, sig);
     print("secp256k1/trusted_sig: " + (ver?"OK":"NOK"));
     if (!ver) hasFailure = true;
-
+/*
     ecsig.init(pubkey,  JSUCrypt.signature.MODE_VERIFY);
     ver = ecsig.verify(input, wrongsig);
     print("secp256k1/trusted_wrong_sig: " + (ver?"NOK":"OK"));
@@ -970,9 +1001,10 @@ if (test_sign_ecdsa) {
     ver = ecsig.verify(input, wrongsig);
     print("secp192r1/trusted_wrong_sig: " + (ver?"NOK":"OK"));
     if (ver) hasFailure = true;
-
+*/
     //auto verif
-    var domains = ["secp256k1","secp256r1", "secp192k1", "secp192r1", "secp160k1", "secp160r1"];
+    //var domains = ["secp256k1","secp256r1", "secp192k1", "secp192r1", "secp160k1", "secp160r1"];
+    var domains = ["secp256k1"];
     for (var i = 0; i<domains.length; i++) {
         domain =  JSUCrypt.ECFp.getEcDomainByName(domains[i]);
         [pubkey, privkey] =  JSUCrypt.key.generateECFpPair(256, domain);
@@ -983,6 +1015,64 @@ if (test_sign_ecdsa) {
         print(domains[i]+"/auto_sig_with_key_gen: " + (ver?"OK":"NOK"));
         if (!ver) hasFailure = true;
     }
+    report("Sign ECDSA/SHA1", hasFailure);
+    hasFailure = false;
+
+}
+
+
+
+
+if (test_sign_ecdsa_rf6979) {
+    print("====================================================================");
+    print("                  ECDSA P256/RFC6979 SIGNATURE TESTING                   ");
+    print("====================================================================");
+    //foo();
+    //exit();
+
+    print(" ---                     ECDSA P256/SHA1                          ---*/");
+    var rfc_pubkey,rfc_privkey,rfc_domain,rfc_ver;
+    var rfc_sha  = new  JSUCrypt.hash.SHA1();
+    var rfc_ecsig = new JSUCrypt.signature.ECDSA(rfc_sha);
+    rfc_ecsig.setRandomMethod("RFC6979");
+
+    var rfc_input,rfc_sig,rfc_sig0;
+    //secp256k1
+    rfc_domain =  JSUCrypt.ECFp.getEcDomainByName("P_256");
+    rfc_privkey = new JSUCrypt.key.EcFpPrivateKey(
+        256, rfc_domain, 
+        "C9AFA9D845BA75166B5C215767B1D6934E50C3DB36E89B127B8A622B120F6721");
+
+    rfc_pubkey = new JSUCrypt.key.EcFpPublicKey(
+        256, rfc_domain, 
+        new JSUCrypt.ECFp.AffinePoint("60FED4BA255A9D31C961EB74C6356D68C049B8923B61FA6CE669622E60F29FB6",
+                                      "7903FE1008B8BC99A41AE9E95628BC64F2F1B20C2D7E9F5177A3C294D4462299"));
+
+
+
+    //vector  1
+    //in   = "sample"
+    //sha1 = 8151325dcdbae9e0ff95f9f9658432dbedfdb209
+    //k    = 882905F1227FD620FBF2ABF21244F0BA83D0DC3A9103DBBEE43A1FB858109DB4
+    //r    = 61340C88C3AAEBEB4F6D667F672CA9759A6CCAA9FA8811313039EE4A35471D32
+    //s    = 6D7F147DAC089441BB2E2FE8F7A3FA264B9C475098FDCF6E00D7C996E1B8B7EB
+
+    rfc_sample_input  = "73616d706c65";
+    rfc_sig0          = "3044022061340c88c3aaebeb4f6d667f672ca9759a6ccaa9fa8811313039ee4a35471d3202206d7f147dac089441bb2e2fe8f7a3fa264b9c475098fdcf6e00d7c996e1b8b7eb";
+
+    rfc_ecsig.init(rfc_privkey,  JSUCrypt.signature.MODE_SIGN);
+    rfc_sig = rfc_ecsig.sign(rfc_sample_input);
+    rfc_sig = JSUCrypt.utils.byteArrayToHexStr(rfc_sig);
+    if (rfc_sig.equals(rfc_sig0)) {
+        ver = true;
+    } else {
+        ver = false;
+        print("  expected:" +rfc_sig0);
+        print("       got:" +rfc_sig);
+    }
+
+    print("256_P/trusted_sig: " + (ver?"OK":"NOK"));
+    if (!ver) hasFailure = true;
 
     report("Sign ECDSA/SHA1", hasFailure);
     hasFailure = false;
@@ -992,9 +1082,10 @@ if (test_sign_ecdsa) {
 
 
 
+
 // --------------------------------------------------------------------------
 // --------------------------------------------------------------------------
-//                                    HASH
+//                                    HASHMAC
 // --------------------------------------------------------------------------
 // --------------------------------------------------------------------------
 function test_hmac(hasher, key, data, sig) {

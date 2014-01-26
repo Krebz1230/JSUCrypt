@@ -163,4 +163,54 @@ JSUCrypt.utils ||  (function (undefined) {
         return (x+7)& (~7); 
     };
 
+
+    /**
+     * @private
+     */
+    JSUCrypt.utils.UINT64  = function (h,l) {
+        if (h == undefined) h = 0;
+        if (l == undefined) l = 0;
+        return {h:h, l:l};
+    };
+
+    /**
+     * @private
+     */
+    JSUCrypt.utils.CLONE64  = function (x) {
+        return {h:x.h, l:x.l};
+    };
+
+    /**
+     * @private
+     */
+    JSUCrypt.utils.ASSIGN64  = function (x,y) {
+        x.h = y.h; x.l = y.l;
+        return x;
+    };
+
+    /**
+     * @private
+     */
+    JSUCrypt.utils.ADD64  = function (x,y) {
+        var carry, addl;
+
+        //option 1
+        addl = (x.l+y.l)|0;
+        addl = ~addl;
+        carry = ((((x.l & y.l) | (x.l & ~y.l & addl) | (~x.l & y.l & addl)) >> 31) & 1);  
+        //option 2
+        /*
+          carry = (x.l&1)&&(y.l&1)?1:0;
+          carry = (((x.l>>1)+(y.l>>1)+carry) & 0x80000000)?1:0;   
+        */
+        x.l = (x.l + y.l);
+        x.h = (x.h + y.h);
+        if (carry) {
+            x.h = (x.h+1);
+        }
+        x.h = x.h|0;
+        x.l = x.l|0;
+    };
+
+
 }());

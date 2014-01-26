@@ -49,8 +49,10 @@ JSUCrypt.hash.SHA256 || (function(undefined) {
      */
     SHA256.prototype.finalize    = JSUCrypt.hash._finalize;
 
+    SHA256.prototype.length       = 32;
     SHA256.prototype.blockSize    = 64;
-    SHA256.prototype.PKCS1_OID     = [0x30, 0x31, 0x30, 0x0d, 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01, 0x05, 0x00, 0x04, 0x20];
+    SHA256.prototype.wordSize     = 4;
+    SHA256.prototype.PKCS1_OID    = [0x30, 0x31, 0x30, 0x0d, 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01, 0x05, 0x00, 0x04, 0x20];
     SHA256.prototype._BE         = true;
     SHA256.prototype._nWords     = 8;
     SHA256.prototype._IV         = [0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19];
@@ -84,8 +86,9 @@ JSUCrypt.hash.SHA256 || (function(undefined) {
     SHA224.prototype.finalize     = function(block) {
         return (this._finalize256(block)).slice(0,28);
     };
-
+    SHA224.prototype.length       = 28;
     SHA224.prototype.blockSize    = 64;
+    SHA224.prototype.wordSize     = 4;
     SHA224.prototype.PKCS1_OID     = [0x30, 0x2d, 0x30, 0x0d, 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x04, 0x05, 0x00, 0x04, 0x1c];
     SHA224.prototype._BE          = true;
     SHA224.prototype._nWords      = 8;

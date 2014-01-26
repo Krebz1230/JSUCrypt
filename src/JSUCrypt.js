@@ -38,7 +38,7 @@ var JSUCrypt = JSUCrypt || (function (undefined) {
     /**
      * JSUCrypt version
      */
-    u.version = "0.1.0";
+    u.version = "0.2.0";
 
     /**
      * JSUCrypt exception class used by  JSUCrypt library.

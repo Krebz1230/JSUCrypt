@@ -37,6 +37,7 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
      */
     JSUCrypt.signature.ECDSA = function(hash) {        
         this._hash = hash; 
+        this._randMethod = "PRNG";
         this.reset();
     };
 
@@ -59,6 +60,23 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
         this._mode = mode;
         this.reset();
     };
+
+
+    /**
+     * Change the way the random k in generated during the ECDSA signature.
+     *
+     * Known method are:
+     *
+     *   - "PRNG"
+     *   - "RFC6979"
+     *
+     * @param {string} meth   random generator to use.
+     * @function
+     */
+    JSUCrypt.signature.ECDSA.prototype.setRandomMethod = function (meth) {
+        this._randMethod = meth;
+    };
+
     /**
      * @param {X} X X   
      * @see JSUCrypt.signature#reset
@@ -84,22 +102,105 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
      */
     JSUCrypt.signature.ECDSA.prototype.verify    = JSUCrypt.signature._asymVerify;
 
-    JSUCrypt.signature.ECDSA.prototype._doSign = function (h) {  
+    JSUCrypt.signature.ECDSA.prototype._doSign = function (mh) {  
         var order = this._key.domain.order;        
 
-        h = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(h),16);
+        var h = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(mh),16);
 
         for(;;) {
             //peek random
-            var k = [];
-            var i = this._key.size>>>3;
-            while (i--) {
-                k.push(Math.floor(Math.random()*255));
+            var k;
+            var key_blen =  this._key.size>>>3;
+            if (this._randMethod.equals("PRNG")) {
+                k = [];
+                //True Random
+                var i = key_blen;
+                while (i--) {
+                    k.push(Math.floor(Math.random()*255));
+                }
+                k = JSUCrypt.utils.byteArrayToHexStr(k);
+                k = new BigInteger(k,16);
+                k = k.mod(order);
+            } else if (this._randMethod.equals("RFC6979") ||
+                       this._randMethod.equals("RFC6979_TREZOR")) {
+                var d = this._key.d.toByteArray();
+                d = JSUCrypt.utils.normalizeByteArrayUL(d, Math.ceil(order.bitLength()/8));
+
+                var h1 = h;
+                var hlen = this._hash.length*8;
+                if (hlen>order.bitLength()) {
+                    h1 = h1.shiftRight(hlen-order.bitLength());
+                }
+                h1 = h1.mod(order);
+                h1 = h1.toByteArray();
+                h1 = JSUCrypt.utils.normalizeByteArrayUL(h1, Math.ceil(order.bitLength()/8));
+   
+                for (;;) {
+                    var loop;
+                    if (loop == undefined) {
+                        var hmac = new JSUCrypt.signature.HMAC(this._hash);
+                        //b.  Set:          V = 0x01 0x01 0x01 ... 0x01
+                        var V = [];
+                        hlen = this._hash.length;
+                        while(hlen--) {
+                            V.push(0x01);
+                        }
+                        //c. Set: K = 0x00 0x00 0x00 ... 0x00
+                        var K = [];
+                        hlen = this._hash.length;
+                        while(hlen--) {
+                            K.push(0x00);
+                        }
+                        //d.  Set: K = HMAC_K(V || 0x00 || int2octets(x) || bits2octets(h1))
+                        hmac.init( new JSUCrypt.key.HMACKey(K), JSUCrypt.signature.MODE_SIGN);
+                        hmac.update(V);
+                        hmac.update([0]);
+                        hmac.update(d);
+                        K = hmac.sign(h1);
+                        //e.  Set: V = HMAC_K(V) 
+                        hmac.init(new JSUCrypt.key.HMACKey(K), JSUCrypt.signature.MODE_SIGN);
+                        V =  hmac.sign(V);
+                        //f.  Set:  K = HMAC_K(V || 0x01 || int2octets(x) || bits2octets(h1))
+                        hmac.update(V);
+                        hmac.update([1]);
+                        hmac.update(d);
+                        K = hmac.sign(h1);
+                        //g. Set: V = HMAC_K(V) 
+                        hmac.init(new JSUCrypt.key.HMACKey(K), JSUCrypt.signature.MODE_SIGN);
+                        V =  hmac.sign(V);
+                        loop = 0;
+                    } else {
+                        //h.3 loop
+                        hmac.update(V);                            
+                        K = hmac.sign([0]);
+                        hmac.init(new JSUCrypt.key.HMACKey(K), JSUCrypt.signature.MODE_SIGN);
+                        V = hmac.sign(V);
+                        loop++;
+                    }
+                    //h. Apply the following algorithm until a proper value is found fo  k:
+                    //  h.1 
+                    var T = [];
+                    //  h.2
+                    var orderlen = Math.ceil(order.bitLength()/8);
+                    while (T.length<orderlen) {
+                        V = hmac.sign(V);
+                        T = T.concat(V);
+                    }
+                    //  h.3
+                    hlen = T.length*8;
+                    k = new BigInteger("00"+JSUCrypt.utils.byteArrayToHexStr(T),16);
+                    if (hlen > order.bitLength()) {
+                        k = k.shiftRight(hlen-order.bitLength());
+                    }                    
+                    if (!k.equals(BigInteger.ZERO) &&
+                        (k.compareTo(order.subtract(BigInteger.ONE))<0)) {
+                        break;
+                    }
+                }
+            } else {
+                throw new JSUCrypt.JSUCryptException("Invalid ECDSA random  method");
             }
-            k = JSUCrypt.utils.byteArrayToHexStr(k);
-            k = new BigInteger(k,16);
-            k = k.mod(order);
-            
+
             //compute kG
             var  kG   = this._key.domain.G.multiply(k);
             //extract sig r,s
@@ -116,6 +217,7 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
             }
             break;
         } 
+
         var r = x.toByteArray();
         var s = y.toByteArray();
         

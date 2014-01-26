@@ -40,6 +40,8 @@ limitations under the License.
  *   - SHA1
  *   - SHA256
  *   - SHA224
+ *   - SHA384
+ *   - SHA512
  *   - RIPEMD160
  * 
  * ### Examples
@@ -79,6 +81,10 @@ JSUCrypt.hash  || (function (undefined) {
         SHA224: undefined,
         /** @class JSUCrypt.hash.SHA256 */
         SHA256: undefined,
+        /** @class JSUCrypt.hash.SHA384 */
+        SHA384: undefined,
+        /** @class JSUCrypt.hash.SHA512 */
+        SHA512: undefined,
         /** @class JSUCrypt.hash.RIPEMD160 */
         RIPEMD160: undefined,
     };
@@ -112,9 +118,17 @@ JSUCrypt.hash  || (function (undefined) {
      * @abstract
      */
 
+    // --- shortcuts ---
+    var UINT64  = JSUCrypt.utils.UINT64;
+    var CLONE64  = JSUCrypt.utils.CLONE64;
+
     // --- Hash Helper ---
     hash._reset = function() {
-        this._hash  = [].concat(this._IV);
+        if (this.wordSize == 8) {
+            this._hash  = [].concat(this._IV.map(CLONE64));
+        } else {
+            this._hash  = [].concat(this._IV);
+        }
         this._block = [];
         this._msglen = 0;
     };
@@ -126,21 +140,37 @@ JSUCrypt.hash  || (function (undefined) {
             block = [];
         }
         this._block =  this._block.concat(block);        
-        if ( this._block.length<64) {
+        if ( this._block.length<this.blockSize) {
             return;
         } 
         do {
-            this._msglen += 64;
+            this._msglen += this.blockSize;
             // Build next 32bits block M
             // 16word M15, M14.....M0        
             var M = [];            
             for (var i = 0; i < 16; i++) {
                 if (this._BE) {
-                    M[i] = 0xFFFFFFFF&
-                        ( (this._block[i*4+0]<<24) |
-                          (this._block[i*4+1]<<16) |
-                          (this._block[i*4+2]<<8)  |
-                          (this._block[i*4+3]<<0)  );
+                    if (this.wordSize == 8) {
+                        //64bits
+                        M[i] = UINT64( 
+                            0xFFFFFFFF&
+                                ( (this._block[i*8+0]<<24) |
+                                  (this._block[i*8+1]<<16) |
+                                  (this._block[i*8+2]<<8)  |
+                                  (this._block[i*8+3]<<0)  ),
+                            0xFFFFFFFF&
+                                ( (this._block[i*8+4]<<24) |
+                                  (this._block[i*8+5]<<16) |
+                                  (this._block[i*8+6]<<8)  |
+                                  (this._block[i*8+7]<<0)  ));
+                    } else {
+                        //assume 4, aka 32bits
+                        M[i] = 0xFFFFFFFF&
+                            ( (this._block[i*4+0]<<24) |
+                              (this._block[i*4+1]<<16) |
+                              (this._block[i*4+2]<<8)  |
+                              (this._block[i*4+3]<<0)  );
+                    }
                 } else {
                     M[i] = 0xFFFFFFFF&
                         ( (this._block[i*4+3]<<24) |
@@ -149,8 +179,8 @@ JSUCrypt.hash  || (function (undefined) {
                           (this._block[i*4+0]<<0)  );
                 }
             }
-            this._block = this._block.slice(64);
-            //process block 64bytes set in 32bits array
+            this._block = this._block.slice(this.blockSize);
+            //process block 64/128bytes set in 32/64bits array
             this._process(M);
         } while (this._block.length>=64);        
     };
@@ -164,23 +194,23 @@ JSUCrypt.hash  || (function (undefined) {
         this.update(block);
         var msglen = this._msglen + this._block.length;
         this._block.push(0x80);
-        if ((64-this._block.length)<8) {
-            while (this._block.length<64) {
+        if ((this.blockSize-this._block.length)< (this.blockSize/8/*8*/)) {
+            while (this._block.length<this.blockSize) {
                 this._block.push(0);
         }
             this.update([]);
         }
-        while (this._block.length<64) {
+        while (this._block.length<this.blockSize) {
             this._block.push(0);
         }
         
         //pad
         msglen = msglen*8;    
         if (this._BE) {
-            this._block[64-4] = (msglen>>24) & 0xFF;
-            this._block[64-3] = (msglen>>16) & 0xFF;
-            this._block[64-2] = (msglen>>8)  & 0xFF;
-            this._block[64-1] = (msglen)     & 0xFF;
+            this._block[this.blockSize-4] = (msglen>>24) & 0xFF;
+            this._block[this.blockSize-3] = (msglen>>16) & 0xFF;
+            this._block[this.blockSize-2] = (msglen>>8)  & 0xFF;
+            this._block[this.blockSize-1] = (msglen)     & 0xFF;
         } else {
             this._block[64-8] = (msglen)     & 0xFF;
             this._block[64-7] = (msglen>>8)  & 0xFF;
@@ -196,11 +226,25 @@ JSUCrypt.hash  || (function (undefined) {
         var i;
         if (this._BE) {
             for (i = 0; i < this._nWords; i++) {
-                h.push( (this._hash[i]>>24) &0xFF,
-                        (this._hash[i]>>16) &0xFF,
-                        (this._hash[i]>>8)  &0xFF,
-                        (this._hash[i])      &0xFF );
-                offset+=4;
+                if (this.wordSize == 8) {
+                    //64bits
+                    h.push( (this._hash[i].h>>24) &0xFF,
+                            (this._hash[i].h>>16) &0xFF,
+                            (this._hash[i].h>>8)  &0xFF,
+                            (this._hash[i].h)      &0xFF );
+                    h.push( (this._hash[i].l>>24) &0xFF,
+                            (this._hash[i].l>>16) &0xFF,
+                            (this._hash[i].l>>8)  &0xFF,
+                            (this._hash[i].l)      &0xFF );
+                    offset+=8;
+                } else {
+                    //assume 4, aka 32bits
+                    h.push( (this._hash[i]>>24) &0xFF,
+                            (this._hash[i]>>16) &0xFF,
+                            (this._hash[i]>>8)  &0xFF,
+                            (this._hash[i])      &0xFF );
+                    offset+=4;
+                }
             }
         } else {
             for (i = 0; i < this._nWords; i++) {

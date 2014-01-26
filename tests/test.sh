@@ -16,6 +16,7 @@ files="
 ../dist/lib/ka.js
 ../dist/lib/sha1.js
 ../dist/lib/sha256.js
+../dist/lib/sha512.js
 ../dist/lib/ripemd160.js
 ../dist/lib/ecfp.js
 ../dist/lib/des.js
@@ -29,7 +30,9 @@ files="
 
 #RHINO="rhino-debugger"
 RHINO="rhino"
-${RHINO}  -strict  `for x in $files; do echo -f $x; done` test.js
+${RHINO}   -strict  `for x in $files; do echo -f $x; done` test.js
+
+
 
 
 popd 
