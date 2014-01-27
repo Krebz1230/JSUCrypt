@@ -121,8 +121,7 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
                 k = JSUCrypt.utils.byteArrayToHexStr(k);
                 k = new BigInteger(k,16);
                 k = k.mod(order);
-            } else if (this._randMethod.equals("RFC6979") ||
-                       this._randMethod.equals("RFC6979_TREZOR")) {
+            } else if (this._randMethod.equals("RFC6979")) {
                 var d = this._key.d.toByteArray();
                 d = JSUCrypt.utils.normalizeByteArrayUL(d, Math.ceil(order.bitLength()/8));
 
