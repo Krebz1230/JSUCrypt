@@ -55,7 +55,7 @@ var JSUCrypt = JSUCrypt || (function (undefined) {
      * To string 
      */
     u.JSUCryptException.prototype.toString = function() {
-        return "JSUCryptException: "+wat.toString();
+        return "JSUCryptException: "+ this.why.toString();
     };
 
 
