@@ -106,6 +106,7 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
         var order = this._key.domain.order;        
 
         var h = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(mh),16);
+        var hlen;
 
         for(;;) {
             //peek random
@@ -126,7 +127,7 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
                 d = JSUCrypt.utils.normalizeByteArrayUL(d, Math.ceil(order.bitLength()/8));
 
                 var h1 = h;
-                var hlen = this._hash.length*8;
+                hlen = this._hash.length*8;
                 if (hlen>order.bitLength()) {
                     h1 = h1.shiftRight(hlen-order.bitLength());
                 }
@@ -200,6 +201,11 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
                 throw new JSUCrypt.JSUCryptException("Invalid ECDSA random  method");
             }
 
+            //align h
+            hlen = this._hash.length*8;
+            if (hlen>order.bitLength()) {
+                h = h.shiftRight(hlen-order.bitLength());
+            }
             //compute kG
             var  kG   = this._key.domain.G.multiply(k);
             //extract sig r,s
@@ -226,20 +232,23 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
         return [0x30, r.length+s.length].concat(r).concat(s);        
     };
 
-    JSUCrypt.signature.ECDSA.prototype._doVerify = function(h, sig) {
+    JSUCrypt.signature.ECDSA.prototype._doVerify = function(mh, sig) {
         sig = JSUCrypt.utils.anyToByteArray(sig);
         var order = this._key.domain.order;
 
         //finalize hash        
-        h = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(h),16);
-
+        var h = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(mh),16);
+        //align h
+        var hlen = this._hash.length*8;
+        if (hlen>order.bitLength()) {
+            h = h.shiftRight(hlen-order.bitLength());
+        }
         //extract r/s
         var r = sig.slice(4,4+sig[3]);
         var s = sig.slice(4+sig[3]+2);
 
         s = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(s),16);
         r = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(r),16);
-
         //check format
         var offset =  4+ (sig[3]&0xFF);
         if ((sig[0] != 0x30)                         ||

@@ -18,9 +18,9 @@ This beta release of JSUCrypt does not feature performance at main goal, but it'
 
 Current supported algorithms are:
 
-     - hash: RIPMED160, SHA1, SHA224, SHA256
+     - hash: RIPMED160, SHA1, SHA224, SHA256, SHA384, SHA512
      - cipher: DES, AES, RSA
-     - signature:  DES, AES, RSA, ECDSA
+     - signature:  DES, AES, RSA, ECDSA, ECDSA with RFC6979
      - key agreement: ECDH/SVDP
      - padding: PKCS 1 (v1.5), PKCS 5, ISO9797M1, ISO9797M2
 
@@ -68,6 +68,7 @@ Insert something like that in your html page:
         <script type="text/javascript" src="rsa.js"></script>
         <script type="text/javascript" src="sha1.js"></script>
         <script type="text/javascript" src="sha256.js"></script>
+        <script type="text/javascript" src="sha512.js"></script>
 
 Read the documentation, staring with dist/doc/index.html.
 
