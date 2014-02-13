@@ -89,8 +89,6 @@ limitations under the License.
 
 JSUCrypt.ECFp ||  (function (undefined) {
 
-    
-
     /** 
      * @lends JSUCrypt.ECFp
      */
@@ -107,6 +105,8 @@ JSUCrypt.ECFp ||  (function (undefined) {
     ecfp.curveNames = [
         "secp256k1",
         "secp256r1",
+        "secp224k1",
+        "secp224r1",
         "secp192k1",
         "secp192r1",
         "secp160k1",
@@ -114,11 +114,14 @@ JSUCrypt.ECFp ||  (function (undefined) {
         "secp160r1",
         "brainpoolp256r1",
         "brainpoolp256t1",
+        "brainpoolp224r1",
+        "brainpoolp224t1",
         "brainpoolp192r1",
         "brainpoolp192t1",
         "brainpoolp160r1",
         "brainpoolp160t1",
         "P_256",
+        "P_224",
         "P_192",
     ];
     
@@ -157,6 +160,30 @@ JSUCrypt.ECFp ||  (function (undefined) {
             Gx:    "006b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296",
             Gy:    "004fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5",
             n:     "00ffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551",
+            h:     "001"
+        },
+        /** secp224k1*/
+        secp224k1: {
+            name:  "secp224k1",
+            size:  224,
+            a:     "000",
+            b:     "005",
+            p:     "00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFE56D",
+            Gx:    "00A1455B334DF099DF30FC28A169A467E9E47075A90F7E650EB6B7A45C",
+            Gy:    "007E089FED7FBA344282CAFBD6F7E319F7C0B0BD59E2CA4BDB556D61A5",
+            n:     "010000000000000000000000000001DCE8D2EC6184CAF0A971769FB1F7",
+            h:     "001"
+        },
+        /** secp224r1 */
+        secp224r1: {
+            name:  "secp224r1",
+            size:  224,
+            a:     "00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFE",
+            b:     "00B4050A850C04B3ABF54132565044B0B7D7BFD8BA270B39432355FFB4",
+            p:     "00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000001",
+            Gx:    "00B70E0CBD6BB4BF7F321390B94A03C1D356C21122343280D6115C1D21 ",
+            Gy:    "00BD376388B5F723FB4C22DFE6CD4375A05A07476444D5819985007E34",
+            n:     "00FFFFFFFFFFFFFFFFFFFFFFFFFFFF16A2E0B8F03E13DD29455C5C2A3D",
             h:     "001"
         },
         /** secp192k1*/
@@ -232,6 +259,18 @@ JSUCrypt.ECFp ||  (function (undefined) {
             n:     "00a9fb57dba1eea9bc3e660a909d838d718c397aa3b561a6f7901e0e82974856a7",
             h:     "001"
         },
+        /** brainpoolp224r1*/
+        brainpoolp224r1: {
+            name:  "brainpoolp224r1",
+            size:  224,
+            a:     "0068A5E62CA9CE6C1C299803A6C1530B514E182AD8B0042A59CAD29F43",
+            b:     "002580F63CCFE44138870713B1A92369E33E2135D266DBB372386C400B",
+            p:     "00D7C134AA264366862A18302575D1D787B09F075797DA89F57EC8C0FF",
+            Gx:    "000D9029AD2C7E5CF4340823B2A87DC68C9E4CE3174C1E6EFDEE12C07D",
+            Gy:    "0058AA56F772C0726F24C6B89E4ECDAC24354B9E99CAA3F6D3761402CD",
+            n:     "00D7C134AA264366862A18302575D0FB98D116BC4B6DDEBCA3A5A7939F",
+            h:     "001"
+        },
         /** brainpoolp192r1*/
         brainpoolp192r1: {
             name:  "brainpoolp192r1",
@@ -254,6 +293,18 @@ JSUCrypt.ECFp ||  (function (undefined) {
             Gx:    "00a3e8eb3cc1cfe7b7732213b23a656149afa142c47aafbc2b79a191562e1305f4",
             Gy:    "002d996c823439c56d7f7b22e14644417e69bcb6de39d027001dabe8f35b25c9be",
             n:     "00a9fb57dba1eea9bc3e660a909d838d718c397aa3b561a6f7901e0e82974856a7",
+            h:     "001"
+        },
+        /** brainpoolp224t1*/
+        brainpoolp192t1: {
+            name:  "brainpoolp224t1",
+            size:  192,
+            a:     "00D7C134AA264366862A18302575D1D787B09F075797DA89F57EC8C0FC",
+            b:     "004B337D934104CD7BEF271BF60CED1ED20DA14C08B3BB64F18A60888D",
+            p:     "002DF271E14427A346910CF7A2E6CFA7B3F484E5C2CCE1C8B730E28B3F",
+            Gx:    "006AB1E344CE25FF3896424E7FFE14762ECB49F8928AC0C76029B4D580",
+            Gy:    "000374E9F5143E568CD23F3F4D7C0D4B1E41C8CC0D1C6ABD5F1A46DB4C",
+            n:     "00D7C134AA264366862A18302575D0FB98D116BC4B6DDEBCA3A5A7939F",
             h:     "001"
         },
         /** brainpoolp192t1*/
@@ -303,6 +354,18 @@ JSUCrypt.ECFp ||  (function (undefined) {
             Gx:    "006b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296",
             Gy:    "004fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5",
             n:     "00ffffffff00000000ffffffffffffffffbce6faada7179e84f3b9cac2fc632551",
+            h:     "001"
+        },
+        /** P_224*/
+        P_224: {
+            name:  "P_224",
+            size:  224,
+            a:     "00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFE",
+            b:     "00B4050A850C04B3ABF54132565044B0B7D7BFD8BA270B39432355FFB4",
+            p:     "00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000001",
+            Gx:    "00B70E0CBD6BB4BF7F321390B94A03C1D356C21122343280D6115C1D21 ",
+            Gy:    "00BD376388B5F723FB4C22DFE6CD4375A05A07476444D5819985007E34",
+            n:     "00FFFFFFFFFFFFFFFFFFFFFFFFFFFF16A2E0B8F03E13DD29455C5C2A3D",
             h:     "001"
         },
         /** P_192*/
@@ -568,10 +631,10 @@ JSUCrypt.ECFp ||  (function (undefined) {
             }
             
             //go on
-            var U1 = this.x.multiply(point.z).mod(p);  
-            var U2 = point.x.multiply(this.z).mod(p);  
-            var S1 = this.y.multiply(point.z).mod(p);  
-            var S2 = point.y.multiply(this.z).mod(p);  
+            var U1 = this.x.multiply(point.z).mod(p);
+            var U2 = point.x.multiply(this.z).mod(p);
+            var S1 = this.y.multiply(point.z).mod(p);
+            var S2 = point.y.multiply(this.z).mod(p);
             
             if (U1.equals(U2) &&  !S1.equals(S2)) {
                 return new  ecfp.ProjectivePoint(BigInteger.ZERO,BigInteger.ONE, BigInteger.ZERO, this._curve);
@@ -582,7 +645,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
             var T  = U1.add(U2).mod(p);
             var TT = T.multiply(T).mod(p);
             var M  = S1.add(S2).mod(p);
-            var R1 = U1.multiply(U2).mod(p); 
+            var R1 = U1.multiply(U2).mod(p);
             var R2 = this._curve.a.multiply(ZZ).multiply(ZZ).mod(p);
             var R  = TT.subtract(R1).add(R2).mod(p);
             var F  = ZZ.multiply(M).mod(p);
@@ -590,8 +653,8 @@ JSUCrypt.ECFp ||  (function (undefined) {
             var LL = L.multiply(L).mod(p);
             var G  = T.add(L).mod(p);       G  = G.multiply(G).mod(p);         G = G.subtract(TT).subtract(LL).mod(p);
             var W  = R.multiply(R).mod(p);  W  = W.add(W).subtract(G).mod(p);
-            var X3 = F.multiply(W).mod(p);  X3 = X3.add(X3).mod(p); 
-            var t  = LL.add(LL).mod(p); 
+            var X3 = F.multiply(W).mod(p);  X3 = X3.add(X3).mod(p);
+            var t  = LL.add(LL).mod(p);
             var Y3 = W.add(W).mod(p);       Y3 = G.subtract(Y3).mod(p);        Y3 = R.multiply(Y3).mod(p);                 Y3 = Y3.subtract(t).mod(p);
             var Z3 = F.multiply(F).mod(p);  Z3 = Z3.multiply(F).mod(p);        Z3 = (Z3.add(Z3).add(Z3).add(Z3)).mod(p);
             
