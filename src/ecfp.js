@@ -376,7 +376,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
             b:     "0064210519e59c80e70fa7e9ab72243049feb8deecc146b9b1",
             p:     "00fffffffffffffffffffffffffffffffeffffffffffffffff",
             Gx:    "00188da80eb03090f67cbf20eb43a18800f4ff0afd82ff1012",
-            Gy:    "007192b95ffc8da78631011ed6b24cdd573f977a11e794811",
+            Gy:    "0007192b95ffc8da78631011ed6b24cdd573f977a11e794811",
             n:     "00ffffffffffffffffffffffff99def836146bc9b1b4d22831",
             h:     "001"
         },
@@ -791,17 +791,23 @@ JSUCrypt.ECFp ||  (function (undefined) {
 
     /**
      * Generate EC Key pair.
-     * @params {number}     size     key size in bits
+     * @params {number}                   size     key size in bits
      * @param {JSUCrypt.ECFp.EcFpDomain}  domain   curve Domain
+     * @param {anyBN}                     priv     private key (optional)
      */
-     JSUCrypt.key.generateECFpPair = function(size, domain) {        
+    JSUCrypt.key.generateECFpPair = function(size, domain, priv) {        
         size = size/8;
         //gen priv scalar
-        var scal = [];
-        for (var i = 0; i<size; i++) {
-            scal[i] = (Math.floor(Math.random()*255));
+        var scal;
+        if (priv == undefined) {
+            scal = [];
+            for (var i = 0; i<size; i++) {
+                scal[i] = (Math.floor(Math.random()*255));
+            }
+            scal = JSUCrypt.utils.anyToBigInteger(scal);
+        } else {
+            scal = JSUCrypt.utils.anyToBigInteger(priv);
         }
-        scal = JSUCrypt.utils.anyToBigInteger(scal);
         scal = scal.mod(domain.order);
 
         //gen public point

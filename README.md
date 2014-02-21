@@ -57,6 +57,7 @@ Insert something like that in your html page:
         <script type="text/javascript" src="cipher.js"></script>
         <script type="text/javascript" src="aes.js"></script>
         <script type="text/javascript" src="des.js"></script>
+        <script type="text/javascript" src="rsa.js"></script>
         <script type="text/javascript" src="signature.js"></script>
         <script type="text/javascript" src="ecfp.js"></script>
         <script type="text/javascript" src="keys.js"></script>
@@ -64,8 +65,8 @@ Insert something like that in your html page:
         <script type="text/javascript" src="ecdh.js"></script>
         <script type="text/javascript" src="ecdsa.js"></script>
         <script type="text/javascript" src="hash.js"></script>
+        <script type="text/javascript" src="hashnone.js"></script>
         <script type="text/javascript" src="ripemd160.js"></script>
-        <script type="text/javascript" src="rsa.js"></script>
         <script type="text/javascript" src="sha1.js"></script>
         <script type="text/javascript" src="sha256.js"></script>
         <script type="text/javascript" src="sha512.js"></script>

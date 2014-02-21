@@ -37,6 +37,7 @@ limitations under the License.
  * 
  * Supported XXX cipher are:
  *  
+ *   - HASHNONE
  *   - SHA1
  *   - SHA256
  *   - SHA224
@@ -75,6 +76,8 @@ JSUCrypt.hash  || (function (undefined) {
      * @lends JSUCrypt.hash
      */
     var hash = {
+        /** @class JSUCrypt.hash.HASHNONE */
+        HASHNONE: undefined,
         /** @class JSUCrypt.hash.SHA1 */
         SHA1: undefined,
         /** @class JSUCrypt.hash.SHA224 */
