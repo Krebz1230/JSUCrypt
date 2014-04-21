@@ -530,7 +530,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
             if (!(point instanceof ecfp.ProjectivePoint)) {
                 throw new JSUCrypt.JSUCryptException("Invalid paramerter type");
             }
-            thisProj.add(point);
+            thisProj = thisProj.add(point);
             return thisProj.toAffine();
         };
 
