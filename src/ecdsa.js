@@ -64,16 +64,26 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
 
     /**
      * Change the way the random k in generated during the ECDSA signature.
-     *
+     * Default method is PRNG when creating ECDSA object.
      * Known method are:
      *
      *   - "PRNG"
      *   - "RFC6979"
+     *   - "FIX"
      *
      * @param {string} meth   random generator to use.
+     * @param {anyBN}  rnd    OPTIONAL fixed random value, if generator is "FIX"
      * @function
      */
-    JSUCrypt.signature.ECDSA.prototype.setRandomMethod = function (meth) {
+    JSUCrypt.signature.ECDSA.prototype.setRandomMethod = function (meth, rnd) {
+        if (meth.equals("FIX")) {
+            this._fixrand = JSUCrypt.utils.anyToBigInteger(rnd);
+        } else if (meth.equals("RFC6979") ||
+                   meth.equals("PRNG")) {
+            this._fixrand = undefined;
+        } else {
+            throw new JSUCrypt.JSUCryptException("Invalid 'meth' parameter");
+        }
         this._randMethod = meth;
     };
 
@@ -197,6 +207,8 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
                         break;
                     }
                 }
+            } else if (this._randMethod.equals("FIX")) {
+                k = this._fixrand;
             } else {
                 throw new JSUCrypt.JSUCryptException("Invalid ECDSA random  method");
             }
