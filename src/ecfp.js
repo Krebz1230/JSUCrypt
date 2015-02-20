@@ -259,6 +259,18 @@ JSUCrypt.ECFp ||  (function (undefined) {
             n:     "00a9fb57dba1eea9bc3e660a909d838d718c397aa3b561a6f7901e0e82974856a7",
             h:     "001"
         },
+        /** brainpoolp256t1*/
+        brainpoolp256t1: {
+            name:  "brainpoolp256t1",
+            size:  256,
+            a:     "00a9fb57dba1eea9bc3e660a909d838d726e3bf623d52620282013481d1f6e5374",
+            b:     "00662c61c430d84ea4fe66a7733d0b76b7bf93ebc4af2f49256ae58101fee92b04",
+            p:     "00a9fb57dba1eea9bc3e660a909d838d726e3bf623d52620282013481d1f6e5377",
+            Gx:    "00a3e8eb3cc1cfe7b7732213b23a656149afa142c47aafbc2b79a191562e1305f4",
+            Gy:    "002d996c823439c56d7f7b22e14644417e69bcb6de39d027001dabe8f35b25c9be",
+            n:     "00a9fb57dba1eea9bc3e660a909d838d718c397aa3b561a6f7901e0e82974856a7",
+            h:     "001"
+        },
         /** brainpoolp224r1*/
         brainpoolp224r1: {
             name:  "brainpoolp224r1",
@@ -268,6 +280,18 @@ JSUCrypt.ECFp ||  (function (undefined) {
             p:     "00D7C134AA264366862A18302575D1D787B09F075797DA89F57EC8C0FF",
             Gx:    "000D9029AD2C7E5CF4340823B2A87DC68C9E4CE3174C1E6EFDEE12C07D",
             Gy:    "0058AA56F772C0726F24C6B89E4ECDAC24354B9E99CAA3F6D3761402CD",
+            n:     "00D7C134AA264366862A18302575D0FB98D116BC4B6DDEBCA3A5A7939F",
+            h:     "001"
+        },
+        /** brainpoolp224t1*/
+        brainpoolp224t1: {
+            name:  "brainpoolp224t1",
+            size:  192,
+            a:     "00D7C134AA264366862A18302575D1D787B09F075797DA89F57EC8C0FC",
+            b:     "004B337D934104CD7BEF271BF60CED1ED20DA14C08B3BB64F18A60888D",
+            p:     "002DF271E14427A346910CF7A2E6CFA7B3F484E5C2CCE1C8B730E28B3F",
+            Gx:    "006AB1E344CE25FF3896424E7FFE14762ECB49F8928AC0C76029B4D580",
+            Gy:    "000374E9F5143E568CD23F3F4D7C0D4B1E41C8CC0D1C6ABD5F1A46DB4C",
             n:     "00D7C134AA264366862A18302575D0FB98D116BC4B6DDEBCA3A5A7939F",
             h:     "001"
         },
@@ -281,30 +305,6 @@ JSUCrypt.ECFp ||  (function (undefined) {
             Gx:    "00c0a0647eaab6a48753b033c56cb0f0900a2f5c4853375fd6",
             Gy:    "0014b690866abd5bb88b5f4828c1490002e6773fa2fa299b8f",
             n:     "00c302f41d932a36cda7a3462f9e9e916b5be8f1029ac4acc1",
-            h:     "001"
-        },
-        /** brainpoolp256t1*/
-        brainpoolp256t1: {
-            name:  "brainpoolp256t1",
-            size:  256,
-            a:     "00a9fb57dba1eea9bc3e660a909d838d726e3bf623d52620282013481d1f6e5374",
-            b:     "00662c61c430d84ea4fe66a7733d0b76b7bf93ebc4af2f49256ae58101fee92b04",
-            p:     "00a9fb57dba1eea9bc3e660a909d838d726e3bf623d52620282013481d1f6e5377",
-            Gx:    "00a3e8eb3cc1cfe7b7732213b23a656149afa142c47aafbc2b79a191562e1305f4",
-            Gy:    "002d996c823439c56d7f7b22e14644417e69bcb6de39d027001dabe8f35b25c9be",
-            n:     "00a9fb57dba1eea9bc3e660a909d838d718c397aa3b561a6f7901e0e82974856a7",
-            h:     "001"
-        },
-        /** brainpoolp224t1*/
-        brainpoolp192t1: {
-            name:  "brainpoolp224t1",
-            size:  192,
-            a:     "00D7C134AA264366862A18302575D1D787B09F075797DA89F57EC8C0FC",
-            b:     "004B337D934104CD7BEF271BF60CED1ED20DA14C08B3BB64F18A60888D",
-            p:     "002DF271E14427A346910CF7A2E6CFA7B3F484E5C2CCE1C8B730E28B3F",
-            Gx:    "006AB1E344CE25FF3896424E7FFE14762ECB49F8928AC0C76029B4D580",
-            Gy:    "000374E9F5143E568CD23F3F4D7C0D4B1E41C8CC0D1C6ABD5F1A46DB4C",
-            n:     "00D7C134AA264366862A18302575D0FB98D116BC4B6DDEBCA3A5A7939F",
             h:     "001"
         },
         /** brainpoolp192t1*/
@@ -381,7 +381,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
             h:     "001"
         },
     };
-    
+
     /**
      * class container for a,b,p.
      *
@@ -397,7 +397,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
             this.b        = JSUCrypt.utils.anyToBigInteger(b);
             this.field    = JSUCrypt.utils.anyToBigInteger(field);
     };
-    
+
     /**
      * class container for a,b,p.
      *
